@@ -22,19 +22,21 @@ const Form = () => {
   }
 
   return (
-      <>
-          <form action='' onSubmit={handleLogin}>
-              <div className='flex flex-row mb-4'>
+    <div className="max-w-md mx-auto flex justify-center p-6 bg-gray-100 mt-10 rounded-lg shadow-xl">
+      <div className="ml-6 pt-1">
+          <form className='w-full' action='' onSubmit={handleLogin}>
+              <div className='flex flex-col sm:flex-row mb-4'>
                 <label className='form-text mr-2 font-bold text-lg' for="username">Username</label>
-                <input className='border border-blue-400 rounded-md py-2 px-3 text-grey-darknest' onChange={handleUsername} type="text" name="username" id="username" />
+                <input className='border w-full border-blue-400 rounded-md py-2 px-3 text-grey-darknest' onChange={handleUsername} type="text" name="username" id="username" />
               </div>
-              <div className='flex flex-row mb-4'>
+              <div className='flex flex-col sm:flex-row mb-4'>
                 <label className='form-text mr-3 font-bold text-lg' for="password">Password</label>
-                <input className='border border-blue-400 rounded-md py-2 px-3 text-grey-darknest' onChange={handlePassword} type="password" name="password" id="password" />
+                <input className='border w-full border-blue-400 rounded-md py-2 px-3 text-grey-darknest' onChange={handlePassword} type="password" name="password" id="password" />
               </div>
               <button className='button-form p-2 rounded-lg' type="submit">Log In</button>
           </form>
-      </>
+      </div>
+    </div>
   );
 };
 

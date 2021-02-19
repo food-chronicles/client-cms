@@ -31,26 +31,17 @@ export function useAuth() {
 function useProvideAuth() {
   const [user, setUser] = useState(null);
 
-  // const signin = (cb) => {
-  //   return fakeAuth.signin(() => {
-  //     localStorage.setItem("access_token", "token");
-  //     setUser(localStorage.getItem("access_token"));
-  //     console.log(user, "ini user");
-  //     cb();
-  //   });
-  // };
-  const signin = (username, password) => {
+  const signin = (data, cb) => {
     return fakeAuth.signin(() => {
-      localStorage.setItem("access_token", "token");
-      setUser(localStorage.getItem("access_token"));
-      console.log(user, "ini user habis sign in");
+      setUser("user");
+      console.log(data, 'ini habis sign in ')
+      cb();
     });
   };
+
   const signout = (cb) => {
     return fakeAuth.signout(() => {
-      localStorage.clear();
       setUser(null);
-      console.log(user, "ini user habis logout");
       cb();
     });
   };

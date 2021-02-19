@@ -36,36 +36,4 @@ function App() {
   );
 }
 
-function PublicPage() {
-  return <h3>Public</h3>;
-}
-
-function ProtectedPage() {
-  return <h3>Protected</h3>;
-}
-
-// function LoginPage() {
-//   let history = useHistory();
-//   let location = useLocation();
-//   let auth = useAuth();
-
-//   // let { from } = location.state || { from: { pathname: "/" } };
-//   // let login = () => {
-//   //   auth.signin(() => {
-//   //     history.replace(from);
-//   //   });
-//   // };
-//   let login = () => {
-//     auth.signin();
-//   };
-
-//   return (
-//     <div>
-//       {/* <p>You must log in to view the page at {from.pathname}</p> */}
-//       <p>You must log in to view the page </p>
-//       <button onClick={login}>Log in</button>
-//     </div>
-//   );
-// }
-
 export default App;

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import QRCode from "qrcode.react";
 
 function FormCreate() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [inputList, setInputList] = useState([]);
+  const [idQRCode, setIdQRCode] = useState("");
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -21,14 +23,14 @@ function FormCreate() {
   };
 
   const handleRemoveClick = (e, index) => {
-    e.preventDefault()
+    e.preventDefault();
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
   };
 
   const handleAddClick = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setInputList([...inputList, { key: "", value: "" }]);
   };
 
@@ -46,8 +48,9 @@ function FormCreate() {
     if (!isDuplicate) {
       let payload = { name, amount, ...additionalInfo };
       console.log(payload);
+      setIdQRCode("123456");
     } else {
-      console.log("duplicate key"); 
+      console.log("duplicate key");
     }
   }
 
@@ -64,7 +67,7 @@ function FormCreate() {
             type="text"
             name="username"
             id="username"
-            required 
+            required
           />
         </div>
 
@@ -102,12 +105,12 @@ function FormCreate() {
                   required
                 />
                 <div className="self-center">
-                    <button
-                      className="border rounded-md border-blue-400 py-1 px-3 mr-1"
-                      onClick={(e) => handleRemoveClick(e, i)}
-                    >
-                      -
-                    </button>
+                  <button
+                    className="border rounded-md border-blue-400 py-1 px-3 mr-1"
+                    onClick={(e) => handleRemoveClick(e, i)}
+                  >
+                    -
+                  </button>
                 </div>
               </div>
             </div>
@@ -115,17 +118,29 @@ function FormCreate() {
         })}
 
         <div className="">
-        <button
-          className="border rounded-md border-blue-400 py-1 px-3 m-4 "
-          onClick={(e) => handleAddClick(e)}
-        >
-          +
-        </button>
-          <button onClick={handleCreate} className="button-form py-2 px-4 rounded-lg" type="submit">
+          <button
+            className="border rounded-md border-blue-400 py-1 px-3 m-4 "
+            onClick={(e) => handleAddClick(e)}
+          >
+            +
+          </button>
+          <button
+            onClick={handleCreate}
+            className="button-form py-2 px-4 rounded-lg"
+            type="submit"
+          >
             Create
           </button>
         </div>
       </form>
+      {idQRCode && (
+        <div>
+          <p>Your QR Code:</p>
+          <div className="flex justify-center mx-auto m-5">
+            <QRCode value={idQRCode} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

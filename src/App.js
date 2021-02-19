@@ -8,6 +8,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { ProvideAuth, AuthButton, useAuth, PrivateRoute } from "./auth";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -17,11 +18,8 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/public">
-            {/* <PublicPage /> */}
-          </Route>
           <Route path="/login">
-            {/* <LoginPage /> */}
+            <Login />
           </Route>
           <PrivateRoute path="/create">
             {/* <ProtectedPage /> */}

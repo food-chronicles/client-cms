@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useHistory,
   useLocation,
 } from "react-router-dom"
@@ -34,8 +30,8 @@ const Form = () => {
     console.log(payload);
     console.log(from, 'ini page asal dia')
     auth.signin(payload,() => {
-      // history.replace(from);
-      history.push('/')
+      history.replace(from);
+      // history.push('/')
     })
     
   };

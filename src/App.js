@@ -9,11 +9,14 @@ import {
 } from "react-router-dom";
 import { ProvideAuth, AuthButton, useAuth, PrivateRoute } from "./auth";
 import Login from "./pages/Login";
+import Navbar from './components/Navbar'
+import Create from './pages/Create'
 
 function App() {
   return (
     <ProvideAuth>
       <Router>
+        <Navbar />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -21,9 +24,12 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <PrivateRoute path="/create">
-            {/* <ProtectedPage /> */}
-          </PrivateRoute>
+          {/* <PrivateRoute path="/create">
+            <Create />
+          </PrivateRoute> */}
+          <Route path="/create">
+            <Create />
+          </Route>
           <PrivateRoute path="/scan">
             {/* <ProtectedPage /> */}
           </PrivateRoute>

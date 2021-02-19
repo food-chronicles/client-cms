@@ -3,7 +3,7 @@ import React, { useState } from "react";
 function FormCreate() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
-  const [inputList, setInputList] = useState([{ key: "", value: "" }]);
+  const [inputList, setInputList] = useState([]);
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -20,13 +20,15 @@ function FormCreate() {
     setInputList(list);
   };
 
-  const handleRemoveClick = (index) => {
+  const handleRemoveClick = (e, index) => {
+    e.preventDefault()
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
   };
 
-  const handleAddClick = () => {
+  const handleAddClick = (e) => {
+    e.preventDefault()
     setInputList([...inputList, { key: "", value: "" }]);
   };
 
@@ -45,13 +47,13 @@ function FormCreate() {
       let payload = { name, amount, ...additionalInfo };
       console.log(payload);
     } else {
-      console.log("duplicate key");
+      console.log("duplicate key"); 
     }
   }
 
   return (
     <div>
-      <form onSubmit={handleCreate} className="flex flex-col">
+      <form className="flex flex-col">
         <div className="flex flex-row mb-4 justify-between">
           <label className="form-text mr-2 font-bold text-lg" htmlFor="name">
             Name
@@ -62,6 +64,7 @@ function FormCreate() {
             type="text"
             name="username"
             id="username"
+            required 
           />
         </div>
 
@@ -75,6 +78,7 @@ function FormCreate() {
             type="number"
             name="amount"
             id="amount"
+            required
           />
         </div>
         {inputList.map((x, i) => {
@@ -82,44 +86,42 @@ function FormCreate() {
             <div key={i}>
               <div className="flex flex-row mb-4 justify-between align-middle">
                 <input
-                  className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                  className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                   name="key"
                   placeholder="Enter Title"
                   value={x.firstName}
                   onChange={(e) => handleInputChange(e, i)}
+                  required
                 />
                 <input
-                  className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                  className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                   name="value"
                   placeholder="Enter Information"
                   value={x.lastName}
                   onChange={(e) => handleInputChange(e, i)}
+                  required
                 />
                 <div className="self-center">
-                  {inputList.length !== 1 && (
                     <button
                       className="border rounded-md border-blue-400 py-1 px-3 mr-1"
-                      onClick={() => handleRemoveClick(i)}
+                      onClick={(e) => handleRemoveClick(e, i)}
                     >
                       -
                     </button>
-                  )}
                 </div>
               </div>
-              {inputList.length - 1 === i && (
-                <button
-                  className="border rounded-md border-blue-400 py-1 px-3 mb-4"
-                  onClick={handleAddClick}
-                >
-                  +
-                </button>
-              )}
             </div>
           );
         })}
 
         <div className="">
-          <button className="button-form py-2 px-4 rounded-lg" type="submit">
+        <button
+          className="border rounded-md border-blue-400 py-1 px-3 m-4 "
+          onClick={(e) => handleAddClick(e)}
+        >
+          +
+        </button>
+          <button onClick={handleCreate} className="button-form py-2 px-4 rounded-lg" type="submit">
             Create
           </button>
         </div>

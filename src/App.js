@@ -25,18 +25,18 @@ function App() {
           <Route path="/login">
             <Login />
           </Route>
-          {/* <PrivateRoute path="/create">
+          <PrivateRoute path="/create">
             <Create />
-          </PrivateRoute> */}
-          <Route path="/create">
+          </PrivateRoute>
+          {/* <Route path="/create">
             <Create />
-          </Route>
-          <Route path="/scan">
+          </Route> */}
+          {/* <Route path="/scan">
             <Scan />
-          </Route>
-          {/* <PrivateRoute path="/scan">
-            <ProtectedPage />
-          </PrivateRoute> */}
+          </Route> */}
+          <PrivateRoute path="/scan">
+            <Scan />
+          </PrivateRoute>
           <PrivateRoute path="/history">
             {/* <ProtectedPage /> */}
           </PrivateRoute>

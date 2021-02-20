@@ -11,6 +11,7 @@ import { ProvideAuth, AuthButton, useAuth, PrivateRoute } from "./auth";
 import Login from "./pages/Login";
 import Navbar from './components/Navbar'
 import Create from './pages/Create'
+import History from './pages/History'
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
             {/* <ProtectedPage /> */}
           </PrivateRoute>
           <PrivateRoute path="/history">
-            {/* <ProtectedPage /> */}
+            <History />
           </PrivateRoute>
         </Switch>
       </Router>

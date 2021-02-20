@@ -91,6 +91,7 @@ function FormCreate() {
                 <input
                   className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                   name="key"
+                  size="8"
                   placeholder="Enter Title"
                   value={x.firstName}
                   onChange={(e) => handleInputChange(e, i)}
@@ -99,6 +100,7 @@ function FormCreate() {
                 <input
                   className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                   name="value"
+                  size="20"
                   placeholder="Enter Information"
                   value={x.lastName}
                   onChange={(e) => handleInputChange(e, i)}

@@ -1,8 +1,10 @@
 import FormUpdate from "../components/FormUpdate";
 import QrReader from "react-qr-reader";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 function Scan() {
+  const history = useHistory();
   const [result, setResult] = useState("No result");
   const [inputKey, setInputKey] = useState("");
   const [itemHistory, setItemHistory] = useState([
@@ -45,17 +47,22 @@ function Scan() {
   const [isValidated, setIsValidated] = useState(false);
 
   const handleScan = (data) => {
-    if (data) setResult(data);
+    if (data) {
+      const id = data.split("/")[data.split("/").length - 1];
+      console.log(id, "ini id nya");
+      setResult(id);
+      history.push('/product/'+id)
+    }
   };
 
-  const handleInputKey = (e) => {
-    setInputKey(e.target.value);
-  };
+  // const handleInputKey = (e) => {
+  //   setInputKey(e.target.value);
+  // };
 
-  const handleInputKeySubmit = (e) => {
-    e.preventDefault();
-    setIsValidated(true);
-  };
+  // const handleInputKeySubmit = (e) => {
+  //   e.preventDefault();
+  //   setIsValidated(true);
+  // };
 
   const handleError = (err) => {
     console.error(err);
@@ -68,7 +75,7 @@ function Scan() {
       </h1>
       <h2 className="text-lg">Scan your product</h2>
       {/* <div className="flex justify-content-center "> */}
-      <div className={isValidated ? "grid grid-cols-1 lg:grid-cols-2" : ""}>
+      <div>
         <div className="mx-auto max-w-lg p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
           <QrReader
             className="justify-items-center justify-center mx-auto w-full md:w-2/3"
@@ -82,7 +89,7 @@ function Scan() {
               {JSON.stringify(result)}
             </p>
           </div>
-          <div className="">
+          {/* <div className="">
             <form onSubmit={handleInputKeySubmit}>
               <div className="flex flex-row mb-4 justify-center">
                 <label
@@ -108,44 +115,50 @@ function Scan() {
                 />
               </div>
             </form>
-          </div>
+          </div> */}
         </div>
 
-        {isValidated && (
+        {/* {isValidated && (
           <div className="mx-auto max-w-lg p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
             <FormUpdate />
           </div>
-        )}
+        )} */}
       </div>
       {/* </div> */}
-      <div className="container mx-auto p-6 text-center">
+      {/* <div className="container mx-auto p-6 text-center">
         <div className="mx-auto max-w-lg p-6 bg-gray-100 rounded-lg shadow-xl">
           <h1 className="form-text font-bold text-lg">History</h1>
-          {/* <p>{JSON.stringify(itemHistory)}</p> */}
           {itemHistory.map((history) => {
             return (
               <div className="mx-auto max-w-lg p-6 mt-4 bg-white rounded-lg shadow-xl">
                 <div className="grid grid-cols-2">
                   <p>{history.timestamp ? history.timestamp : history.data}</p>
                   <div>
-                    <p>{typeof history.data === "string" 
-                    ? "Genesis Block"
-                    : <div>
-                      {
-                        // JSON.stringify(Object.keys(history.data))
-                        Object.keys(history.data).map(key => {
-                          return (<p>{key}: {history.data[key]}</p>)
-                        })
-                      }
-                    </div>
-                    }</p>
+                    <p>
+                      {typeof history.data === "string" ? (
+                        "Genesis Block"
+                      ) : (
+                        <div>
+                          {
+                            // JSON.stringify(Object.keys(history.data))
+                            Object.keys(history.data).map((key) => {
+                              return (
+                                <p>
+                                  {key}: {history.data[key]}
+                                </p>
+                              );
+                            })
+                          }
+                        </div>
+                      )}
+                    </p>
                   </div>
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

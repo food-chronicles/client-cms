@@ -13,6 +13,7 @@ import Navbar from './components/Navbar'
 import Create from './pages/Create'
 import History from './pages/History'
 import Scan from './pages/Scan'
+import ProductDetails from './pages/ProductDetails'
 
 
 function App() {
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/product/:id">
+            <ProductDetails />
           </Route>
           <PrivateRoute path="/create">
             <Create />

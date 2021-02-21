@@ -1,15 +1,34 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { Route, Redirect, useHistory } from "react-router-dom";
+import axios from "axios";
 
 const fakeAuth = {
   isAuthenticated: false,
-  signin(cb) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
+  async signin(payload, cb) {
+    try {
+      let response = await axios({
+        url: "http://localhost:4000/login",
+        method: "POST",
+        data: {
+          username: payload.username,
+          password: payload.password,
+        },
+      });
+      if (response) {
+        fakeAuth.isAuthenticated = true;
+        localStorage.access_token = response.data.access_token;
+        console.log(response.data, "ini dari fakeauth signin");
+        cb();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   },
   signout(cb) {
     fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
+    localStorage.clear();
+    cb()
+    // setTimeout(cb, 100);
   },
 };
 
@@ -29,19 +48,19 @@ export function useAuth() {
 }
 
 function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(false);
 
-  const signin = (data, cb) => {
-    return fakeAuth.signin(() => {
-      setUser("user");
-      console.log(data, 'ini habis sign in ')
+  const signin = (payload, cb) => {
+    return fakeAuth.signin(payload, () => {
+      setUser(true);
+      console.log(payload, "ini habis sign in ");
       cb();
     });
   };
 
   const signout = (cb) => {
     return fakeAuth.signout(() => {
-      setUser(null);
+      setUser(false);
       cb();
     });
   };
@@ -76,12 +95,12 @@ export function AuthButton() {
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 export function PrivateRoute({ children, ...rest }) {
-  let auth = useAuth();
+  // let auth = useAuth();
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        auth.user ? (
+        localStorage.access_token ? (
           children
         ) : (
           <Redirect

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,7 @@ function ProductDetails() {
   }
   return (
     <div className="container mx-auto p-6 text-center">
-      {/* <p>{JSON.stringify(blockchainDetail.chain.reverse(), null, 4)} ini blockchain detail</p> */}
+      {/* <p>{JSON.stringify(blockchainDetail.chain, null, 4)} ini blockchain detail</p> */}
       <h1 className="form-text font-bold text-2xl my-5 self-center">
         Product Details
       </h1>
@@ -39,8 +39,10 @@ function ProductDetails() {
       </div>
 
       <h1 className="form-text font-bold text-2xl">History</h1>
-      <button className="button-form p-2 my-2 rounded-lg">Update</button>
+      
+      {/* {toggleUpdateForm &&  */}
       <FormUpdate />
+      {/* } */}
       {blockchainDetail.chain
         .slice(0)
         .reverse()

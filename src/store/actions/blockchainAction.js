@@ -33,6 +33,32 @@ export function createBlockchain(payload) {
   };
 }
 
+export function updateBlockchain(id, payload) {
+  return async (dispatch) => {
+    try {
+      console.log(id, payload, "ini di action");
+      let newChain = await axios({
+        url: "http://localhost:4000/product/"+id,
+        method: "PUT",
+        headers: {
+          access_token: localStorage.access_token,
+          key: payload.key
+        },
+        data: {
+          location: {
+            longitude: payload.position.longitude,
+            latitude: payload.position.latitude,
+          },
+          data: payload.data,
+        },
+      });
+      getDetails(id)
+    } catch (error) {
+      console.log(error, "error update blockchain");
+    }
+  };
+}
+
 export function getDetails(id) {
   return async (dispatch) => {
     dispatch(setLoading(true));

@@ -30,8 +30,7 @@ const Form = () => {
     console.log(payload);
     console.log(from, 'ini page asal dia')
     auth.signin(payload,() => {
-      history.replace(from);
-      // history.push('/')
+      history.push('/')
     })
 
   };

@@ -40,9 +40,7 @@ function ProductDetails() {
 
       <h1 className="form-text font-bold text-2xl">History</h1>
       
-      {/* {toggleUpdateForm &&  */}
       <FormUpdate />
-      {/* } */}
       {blockchainDetail.chain
         .slice(0)
         .reverse()
@@ -53,7 +51,7 @@ function ProductDetails() {
               className="mx-auto max-w-lg p-6 mt-4 bg-white rounded-lg shadow-xl"
             >
               <div className="grid grid-cols-2">
-                <p>{history.timestap}</p>
+                <p className="self-center">{history.timestap}</p>
                 <div>
                   <div>
                     {typeof history.data === "string" ? (
@@ -64,9 +62,9 @@ function ProductDetails() {
                           // JSON.stringify(Object.keys(history.data))
                           Object.keys(history.data).map((key, index) => {
                             return (
-                              <span key={index}>
+                              <p key={index}>
                                 {key}: {history.data[key]}
-                              </span>
+                              </p>
                             );
                           })
                         }

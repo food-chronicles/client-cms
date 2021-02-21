@@ -52,7 +52,7 @@ export function updateBlockchain(id, payload) {
           data: payload.data,
         },
       });
-      getDetails(id)
+      dispatch(getDetails(id))
     } catch (error) {
       console.log(error, "error update blockchain");
     }

@@ -52,11 +52,14 @@ export function updateBlockchain(id, payload) {
             longitude: payload.position.longitude,
             latitude: payload.position.latitude,
           },
+          image_url: payload.image_url,
           data: payload.data,
         },
       });
       dispatch(getDetails(id));
+      successToaster("Success!", "Entry has been saved")
     } catch (error) {
+      errorToaster("Oops!", error.message)
       console.log(error, "error update blockchain");
     }
   };
@@ -79,6 +82,7 @@ export function getDetails(id) {
     } catch (error) {
       dispatch(setLoading(false));
       dispatch(setError(error));
+      errorToaster("Oops!", error.message)
       console.log((error, "error get blockchain details"));
     }
   };

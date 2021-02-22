@@ -11,7 +11,6 @@ function FormCreate() {
   const [amount, setAmount] = useState("");
   const [amountError, setAmountError] = useState(false);
   const [image, setImage] = useState(null);
-  const [imageError, setImageError] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDuplicateKey, setIsDuplicateKey] = useState(false);

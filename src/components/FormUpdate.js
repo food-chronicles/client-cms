@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateBlockchain } from "../store/actions/blockchainAction";
 import { useParams } from "react-router-dom";
+import { storage } from "../firebase";
+import { successToaster, errorToaster } from "../utils/toaster";
 
 function FormUpdate() {
   const dispatch = useDispatch();
@@ -12,6 +14,9 @@ function FormUpdate() {
   const [UniqueKeyError, setUniqueKeyError] = useState(false);
   const [amount, setAmount] = useState("");
   const [amountError, setAmountError] = useState(false);
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [isDuplicateKey, setIsDuplicateKey] = useState(false);
   const [inputList, setInputList] = useState([]);
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
@@ -26,6 +31,41 @@ function FormUpdate() {
 
   const handleAmount = (e) => {
     setAmount(e.target.value);
+  };
+
+  const handleImage = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    const uploadTask = storage
+      .ref(`images/${localStorage.access_token + image.name}`)
+      .put(image);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.log(error, "ini error upload image");
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(localStorage.access_token + image.name)
+          .getDownloadURL()
+          .then((url) => {
+            setImageUrl(url);
+            successToaster("Upload success", "Your image has been saved");
+          });
+      }
+    );
   };
 
   const handleInputChange = (e, index) => {
@@ -52,15 +92,15 @@ function FormUpdate() {
     let additionalInfo = {};
 
     if (!uniqueKey) {
-      return setUniqueKeyError(true);
-    } else {
-      setUniqueKeyError(false);
+      return errorToaster("Missing field!", "Key is required");
     }
 
     if (!amount) {
-      return setAmountError(true);
-    } else {
-      setAmountError(false);
+      return errorToaster("Missing field!", "Amount is required");
+    }
+
+    if (!imageUrl) {
+      return errorToaster("Missing field!", "Image must be uploaded");
     }
 
     setIsDuplicateKey(false);
@@ -72,6 +112,10 @@ function FormUpdate() {
         setIsDuplicateKey(true);
       }
     });
+
+    if (isDuplicateKey) {
+      return errorToaster("Oops!", "Duplicate entry titles");
+    }
 
     if (!isDuplicateKey) {
       setUniqueKeyError(false);
@@ -85,6 +129,7 @@ function FormUpdate() {
                 amount,
                 ...additionalInfo,
               },
+              image_url: imageUrl,
               position: position.coords,
             };
             dispatch(updateBlockchain(blockchainId, payload));
@@ -95,10 +140,11 @@ function FormUpdate() {
           }
         );
       } else {
-        console.log("Please allow browser to access location");
+        return errorToaster(
+          "Oops!",
+          "Please allow browser to access location info"
+        );
       }
-    } else {
-      console.log("duplicate keys");
     }
   }
 
@@ -119,7 +165,7 @@ function FormUpdate() {
           Update
         </button>
       )}
-      {toggleUpdateForm && <div className="max-w-md mx-auto flex justify-center p-6 bg-gray-100 mt-10 rounded-lg shadow-xl">
+      {toggleUpdateForm && <div className="max-w-xl mx-auto flex justify-center p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
         <form className="flex flex-col">
           <div className="flex flex-row mb-4 justify-between">
             <label className="form-text mr-2 font-bold text-lg" htmlFor="key">
@@ -162,6 +208,35 @@ function FormUpdate() {
               )}
             </div>
           </div>
+
+          <div className="flex flex-row mb-4 justify-between">
+            <label className="form-text mr-3 font-bold text-lg" htmlFor="image">
+              Image
+            </label>
+            <div>
+              <input
+                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                onChange={handleImage}
+                type="file"
+                name="image"
+                id="image"
+                required
+              />
+              {/* {amountError && (
+                <p className="text-red-500">Amount must be filled</p>
+              )} */}
+            </div>
+            <button
+              onClick={handleImageUpload}
+              className="border rounded-md border-blue-400 py-1 px-3 m-4 self-center"
+            >
+              Upload
+            </button>
+          </div>
+          <div>
+            <progress value={uploadProgress} max="100" />
+          </div>
+
           {inputList.map((x, i) => {
             return (
               <div key={i}>

@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import QRCode from "qrcode.react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBlockchain } from "../store/actions/blockchainAction";
+import { storage } from "../firebase";
+import { successToaster, errorToaster } from "../utils/toaster";
 
 function FormCreate() {
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState(false);
   const [amount, setAmount] = useState("");
   const [amountError, setAmountError] = useState(false);
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [isDuplicateKey, setIsDuplicateKey] = useState(false);
   const [inputList, setInputList] = useState([]);
   const dispatch = useDispatch();
@@ -21,6 +26,41 @@ function FormCreate() {
 
   const handleAmount = (e) => {
     setAmount(e.target.value);
+  };
+
+  const handleImage = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    const uploadTask = storage
+      .ref(`images/${localStorage.access_token + image.name}`)
+      .put(image);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.log(error, "ini error upload image");
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(localStorage.access_token + image.name)
+          .getDownloadURL()
+          .then((url) => {
+            setImageUrl(url);
+            successToaster("Upload success", "Your image has been saved");
+          });
+      }
+    );
   };
 
   const handleInputChange = (e, index) => {
@@ -48,15 +88,15 @@ function FormCreate() {
     // let isDuplicate = false;
 
     if (!name) {
-      return setNameError(true);
-    } else {
-      setNameError(false);
+      return errorToaster("Missing field!", "Product name is required");
     }
 
     if (!amount) {
-      return setAmountError(true);
-    } else {
-      setAmountError(false);
+      return errorToaster("Missing field!", "Amount is required");
+    }
+
+    if (!imageUrl) {
+      return errorToaster("Missing field!", "Image must be uploaded");
     }
 
     setIsDuplicateKey(false);
@@ -68,6 +108,10 @@ function FormCreate() {
         setIsDuplicateKey(true);
       }
     });
+
+    if (isDuplicateKey) {
+      return errorToaster("Oops!", "Duplicate entry titles");
+    }
 
     if (!isDuplicateKey) {
       setNameError(false);
@@ -81,6 +125,7 @@ function FormCreate() {
                 amount,
                 ...additionalInfo,
               },
+              image_url: imageUrl,
               position: position.coords,
             };
             dispatch(createBlockchain(payload));
@@ -90,102 +135,133 @@ function FormCreate() {
           }
         );
       } else {
-        console.log("Please allow browser to access location");
+        return errorToaster(
+          "Oops!",
+          "Please allow browser to access location info"
+        );
       }
-      // console.log(payload);
-      // setIdQRCode("123456");
-    } else {
-      console.log("duplicate keys");
     }
   }
 
   return (
     <div>
-      {!qrCodeLink && <form className="flex flex-col">
-        <div className="flex flex-row mb-4 justify-between">
-          <label className="form-text mr-2 font-bold text-lg" htmlFor="name">
-            Name
-          </label>
-          <div>
-            <input
-              className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
-              onChange={handleName}
-              type="text"
-              name="username"
-              id="username"
-              required
-            />
-            {nameError && <p className="text-red-500">Name must be filled</p>}
+      {!qrCodeLink && (
+        <form className="flex flex-col">
+          <div className="flex flex-row mb-4 justify-between">
+            <label className="form-text mr-2 font-bold text-lg" htmlFor="name">
+              Name
+            </label>
+            <div>
+              <input
+                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                onChange={handleName}
+                type="text"
+                name="username"
+                id="username"
+                required
+              />
+              {nameError && <p className="text-red-500">Name must be filled</p>}
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-row mb-4 justify-between">
-          <label className="form-text mr-3 font-bold text-lg" htmlFor="amount">
-            Amount
-          </label>
-          <div>
-            <input
-              className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
-              onChange={handleAmount}
-              type="number"
-              name="amount"
-              id="amount"
-              required
-            />
-            {amountError && (
-              <p className="text-red-500">Amount must be filled</p>
-            )}
+          <div className="flex flex-row mb-4 justify-between">
+            <label
+              className="form-text mr-3 font-bold text-lg"
+              htmlFor="amount"
+            >
+              Amount
+            </label>
+            <div>
+              <input
+                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                onChange={handleAmount}
+                type="number"
+                name="amount"
+                id="amount"
+                required
+              />
+              {amountError && (
+                <p className="text-red-500">Amount must be filled</p>
+              )}
+            </div>
           </div>
-        </div>
-        {inputList.map((x, i) => {
-          return (
-            <div key={i}>
-              <div className="flex flex-row mb-4 justify-between align-middle">
-                <input
-                  className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
-                  name="key"
-                  placeholder="Enter Title"
-                  value={x.firstName}
-                  onChange={(e) => handleInputChange(e, i)}
-                  required
-                />
-                <input
-                  className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
-                  name="value"
-                  placeholder="Enter Information"
-                  value={x.lastName}
-                  onChange={(e) => handleInputChange(e, i)}
-                  required
-                />
-                <div className="self-center">
-                  <button
-                    className="border rounded-md border-blue-400 py-1 px-3 mr-1"
-                    onClick={(e) => handleRemoveClick(e, i)}
-                  >
-                    -
-                  </button>
+          <div className="flex flex-row mb-4 justify-between">
+            <label className="form-text mr-3 font-bold text-lg" htmlFor="image">
+              Image
+            </label>
+            <div>
+              <input
+                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                onChange={handleImage}
+                type="file"
+                name="image"
+                id="image"
+                required
+              />
+              {/* {amountError && (
+                <p className="text-red-500">Amount must be filled</p>
+              )} */}
+            </div>
+            <button
+              onClick={handleImageUpload}
+              className="border rounded-md border-blue-400 py-1 px-3 m-4 self-center"
+            >
+              Upload
+            </button>
+          </div>
+          <div>
+            <progress value={uploadProgress} max="100" />
+          </div>
+          {inputList.map((x, i) => {
+            return (
+              <div key={i}>
+                <div className="flex flex-row mb-4 justify-between align-middle">
+                  <input
+                    className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                    name="key"
+                    placeholder="Enter Title"
+                    value={x.firstName}
+                    onChange={(e) => handleInputChange(e, i)}
+                    required
+                  />
+                  <input
+                    className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                    name="value"
+                    placeholder="Enter Information"
+                    value={x.lastName}
+                    onChange={(e) => handleInputChange(e, i)}
+                    required
+                  />
+                  <div className="self-center">
+                    <button
+                      className="border rounded-md border-blue-400 py-1 px-3 mr-1"
+                      onClick={(e) => handleRemoveClick(e, i)}
+                    >
+                      -
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
 
-        <div className="">
-          <button
-            className="border rounded-md border-blue-400 py-1 px-3 m-4 "
-            onClick={(e) => handleAddClick(e)}
-          >
-            +
-          </button>
-          <button
-            onClick={handleCreate}
-            className="button-form py-2 px-4 rounded-lg"
-            type="submit"
-          >
-            Create
-          </button>
-        </div>
-      </form>}
+          <p className="">
+            <button
+              className="border rounded-md border-blue-400 py-1 px-3 m-4 "
+              onClick={(e) => handleAddClick(e)}
+            >
+              +
+            </button>
+            <button
+              onClick={handleCreate}
+              className="button-form py-2 px-4 rounded-lg"
+              type="submit"
+            >
+              Create
+            </button>
+          </p>
+        </form>
+      )}
       {qrCodeLink && (
         <div>
           <p>Your QR Code:</p>
@@ -193,8 +269,7 @@ function FormCreate() {
             <QRCode value={qrCodeLink} />
           </div>
           <p>Unique key to update:</p>
-          <p>{blockchainDetail.chain[blockchainDetail.chain.length-1].key}</p>
-          
+          <p>{blockchainDetail.chain[blockchainDetail.chain.length - 1].key}</p>
         </div>
       )}
     </div>

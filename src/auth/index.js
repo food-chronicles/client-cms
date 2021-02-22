@@ -53,7 +53,6 @@ function useProvideAuth() {
   const signin = (payload, cb) => {
     return fakeAuth.signin(payload, () => {
       setUser(true);
-      console.log(payload, "ini habis sign in ");
       cb();
     });
   };

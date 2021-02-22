@@ -1,9 +1,9 @@
 import axios from "axios";
+import { successToaster, errorToaster } from "../../utils/toaster";
 
 export function createBlockchain(payload) {
   return async (dispatch) => {
     try {
-      // console.log(payload, "ini di action");
       let newChain = await axios({
         url: "http://localhost:4000/product",
         method: "POST",
@@ -16,6 +16,7 @@ export function createBlockchain(payload) {
             longitude: payload.position.longitude,
             latitude: payload.position.latitude,
           },
+          image_url: payload.image_url,
           data: payload.data,
         },
       });
@@ -27,8 +28,39 @@ export function createBlockchain(payload) {
         type: "UPDATE_QRCODE_LINK",
         payload: newChain.data._id,
       });
+      successToaster("Success!", "Entry has been saved")
     } catch (error) {
+      errorToaster("Oops!", error.message)
       console.log(error, "error create blockchain");
+    }
+  };
+}
+
+export function updateBlockchain(id, payload) {
+  return async (dispatch) => {
+    try {
+      console.log(id, payload, "ini di action");
+      let newChain = await axios({
+        url: "http://localhost:4000/product/" + id,
+        method: "PUT",
+        headers: {
+          access_token: localStorage.access_token,
+          key: payload.key,
+        },
+        data: {
+          location: {
+            longitude: payload.position.longitude,
+            latitude: payload.position.latitude,
+          },
+          image_url: payload.image_url,
+          data: payload.data,
+        },
+      });
+      dispatch(getDetails(id));
+      successToaster("Success!", "Entry has been saved")
+    } catch (error) {
+      errorToaster("Oops!", error.message)
+      console.log(error, "error update blockchain");
     }
   };
 }
@@ -41,7 +73,6 @@ export function getDetails(id) {
         url: "http://localhost:4000/product/" + id,
         method: "GET",
       });
-      // console.log(details.data, 'ini hasil get details di action')
       dispatch(setLoading(false));
       dispatch(setError(null));
       dispatch({
@@ -51,6 +82,7 @@ export function getDetails(id) {
     } catch (error) {
       dispatch(setLoading(false));
       dispatch(setError(error));
+      errorToaster("Oops!", error.message)
       console.log((error, "error get blockchain details"));
     }
   };

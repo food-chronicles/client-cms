@@ -51,7 +51,7 @@ function ProductDetails() {
               className="mx-auto max-w-lg p-6 mt-4 bg-white rounded-lg shadow-xl"
             >
               <div className="grid grid-cols-2">
-                <p className="self-center">{history.timestap}</p>
+                <p className="self-center">{history.timestamp}</p>
                 <div>
                   <div>
                     {typeof history.data === "string" ? (

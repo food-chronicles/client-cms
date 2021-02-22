@@ -3,7 +3,7 @@ const initialState = {
   username: "",
   company_name: "",
   category: "",
-  history: "",
+  history: [],
   isLoading: false,
   error: null
 };

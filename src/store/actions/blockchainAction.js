@@ -1,9 +1,9 @@
 import axios from "axios";
+import { successToaster, errorToaster } from "../../utils/toaster";
 
 export function createBlockchain(payload) {
   return async (dispatch) => {
     try {
-      // console.log(payload, "ini di action");
       let newChain = await axios({
         url: "http://localhost:4000/product",
         method: "POST",
@@ -16,6 +16,7 @@ export function createBlockchain(payload) {
             longitude: payload.position.longitude,
             latitude: payload.position.latitude,
           },
+          image_url: payload.image_url,
           data: payload.data,
         },
       });
@@ -27,7 +28,9 @@ export function createBlockchain(payload) {
         type: "UPDATE_QRCODE_LINK",
         payload: newChain.data._id,
       });
+      successToaster("Success!", "Entry has been saved")
     } catch (error) {
+      errorToaster("Oops!", error.message)
       console.log(error, "error create blockchain");
     }
   };
@@ -38,11 +41,11 @@ export function updateBlockchain(id, payload) {
     try {
       console.log(id, payload, "ini di action");
       let newChain = await axios({
-        url: "http://localhost:4000/product/"+id,
+        url: "http://localhost:4000/product/" + id,
         method: "PUT",
         headers: {
           access_token: localStorage.access_token,
-          key: payload.key
+          key: payload.key,
         },
         data: {
           location: {
@@ -52,7 +55,7 @@ export function updateBlockchain(id, payload) {
           data: payload.data,
         },
       });
-      dispatch(getDetails(id))
+      dispatch(getDetails(id));
     } catch (error) {
       console.log(error, "error update blockchain");
     }
@@ -67,7 +70,6 @@ export function getDetails(id) {
         url: "http://localhost:4000/product/" + id,
         method: "GET",
       });
-      // console.log(details.data, 'ini hasil get details di action')
       dispatch(setLoading(false));
       dispatch(setError(null));
       dispatch({

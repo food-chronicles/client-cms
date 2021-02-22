@@ -8,8 +8,8 @@ function Create() {
       </h1>
       <h2 className="text-lg">Create new entry</h2>
       {/* <div className="flex justify-content-center "> */}
-        <div className="max-w-lg mx-auto p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
-          <div className="ml-6 pt-1 flex-grow">
+        <div className="mx-auto max-w-xl p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
+          <div className="pt-1 flex-grow">
             <FormCreate />
           </div>
         </div>

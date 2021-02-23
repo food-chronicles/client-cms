@@ -33,7 +33,7 @@ function Home() {
     </div>
   }
   if (error) {
-    return <p>{error}</p>;
+    return <p>{JSON.stringify(error)}</p>;
   }
 
   return (

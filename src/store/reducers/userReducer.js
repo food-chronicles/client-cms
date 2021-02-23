@@ -1,6 +1,8 @@
 const initialState = {
   _id: "",
   username: "",
+  email:"",
+  password:"",
   company_name: "",
   email: "",
   category: "",
@@ -13,7 +15,7 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GET_USER":
-      const { _id, username, company_name, email, category } = action.payload;
+      const { _id, username, email, company_name, category } = action.payload;
       return {
         ...state,
         _id,

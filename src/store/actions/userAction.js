@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { successToaster, errorToaster } from "../../utils/toaster";
 
 export function getUserInfo() {
   return async (dispatch) => {
@@ -47,6 +48,34 @@ export function getUserHistory() {
       dispatch(setError(error))
       console.log(error, 'ini error di get user info')
     }
+  }
+}
+
+export const updateUser = (data, id) => {
+  try {
+      return async (dispatch) => {
+          let url = `http://localhost:4000/user`
+          let payload = {
+              username: data.username,
+              email: data.email,
+              company_name: data.company_name,
+              category: data.category
+          }
+          const response = await axios.put(url, payload, {
+            headers: {
+              access_token: localStorage.access_token,
+              user: {
+                id
+              }
+            }
+          })
+          successToaster("Upload success", "Your profile has been updated")
+          console.log(response);
+          return response
+      }
+  } catch (error) {
+      errorToaster("Oops!", error.message)
+      console.log(error)
   }
 }
 

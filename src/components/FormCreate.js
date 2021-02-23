@@ -210,9 +210,10 @@ function FormCreate() {
               Upload
             </button>
           </div>
-          <div className="m-4 flex justify-center">
+          {uploadProgress!== 0 && <div className="m-4 flex gap-4 justify-center">
             <progress value={uploadProgress} max="100" />
-          </div>
+            <small>Upload Progress: {uploadProgress}%</small>
+          </div>}
           {inputList.map((x, i) => {
             return (
               <div key={i}>

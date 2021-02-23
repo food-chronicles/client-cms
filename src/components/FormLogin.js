@@ -33,11 +33,12 @@ const Form = () => {
       history.replace(from);
       // history.push('/')
     })
-    
+
   };
 
   return (
-    <>
+    <div className="max-w-md mx-auto flex justify-center p-6 bg-gray-100 mt-10 rounded-lg shadow-xl">
+      <div className="ml-6 pt-1">
       <form className='w-full' action='' onSubmit={handleLogin}>
         <div className='flex flex-col sm:flex-row mb-4'>
           <label className="form-text mr-2 font-bold text-lg" htmlFor="username">
@@ -67,7 +68,8 @@ const Form = () => {
           Log In
         </button>
       </form>
-    </>
+    </div>
+    </div>
   );
 };
 

@@ -9,6 +9,7 @@ function Home() {
   const {
     _id,
     username,
+    email,
     company_name,
     category,
     isLoading,
@@ -31,17 +32,20 @@ function Home() {
       <div className="md:flex no-wrap md:-mx-2">
         {/* Bagian Kiri */}
         <div className="w-full md:w-3/12 md:mx-2 mb-10">
-          <div className="bg-white p-3">
-            <h1 className="text-gray-900 text-xl leading-8 mt-1 mb-5 pb-2 border-b-4 border-blue-400 ">
+          <div className="bg-white p-3 text-center md:text-left">
+            <h1 className="text-gray-900  text-xl leading-8 mt-1 mb-5 pb-2 border-b-4 border-blue-400 ">
               Profile
             </h1>
-            <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
+            <h1 className="text-gray-900 font-bold text-2xl leading-8 my-2">
               {username}
             </h1>
             <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
               {_id}
             </p>
-            <h3 className="text-gray-600 font-lg text-semibold leading-6">
+            <h3 className="text-gray-600 font-lg text-semibold leading-6 mb-2">
+              {email}
+            </h3>
+            <h3 className="text-gray-600 font-bold text-xl leading-6">
               {company_name}
             </h3>
             <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">

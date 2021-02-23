@@ -2,6 +2,7 @@ const initialState = {
   _id: "",
   username: "",
   company_name: "",
+  email: "",
   category: "",
   history: [],
   isLoading: false,
@@ -12,11 +13,12 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GET_USER":
-      const { _id, username, company_name, category } = action.payload;
+      const { _id, username, company_name, email, category } = action.payload;
       return {
         ...state,
         _id,
         username,
+        email,
         company_name,
         category,
       };

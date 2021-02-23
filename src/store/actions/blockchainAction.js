@@ -30,8 +30,8 @@ export function createBlockchain(payload) {
       });
       successToaster("Success!", "Entry has been saved")
     } catch (error) {
-      errorToaster("Oops!", error.message)
-      console.log(error, "error create blockchain");
+      errorToaster("Oops!", error.response.data.message)
+      console.log(error.response.data, "error create blockchain");
     }
   };
 }
@@ -39,7 +39,7 @@ export function createBlockchain(payload) {
 export function updateBlockchain(id, payload) {
   return async (dispatch) => {
     try {
-      console.log(id, payload, "ini di action");
+      // console.log(id, payload, "ini di action");
       let newChain = await axios({
         url: "http://localhost:4000/product/" + id,
         method: "PUT",
@@ -59,8 +59,7 @@ export function updateBlockchain(id, payload) {
       dispatch(getDetails(id));
       successToaster("Success!", "Entry has been saved")
     } catch (error) {
-      errorToaster("Oops!", error.message)
-      console.log(error, "error update blockchain");
+      errorToaster("Oops!", error.response.data.message)
     }
   };
 }
@@ -82,7 +81,7 @@ export function getDetails(id) {
     } catch (error) {
       dispatch(setLoading(false));
       dispatch(setError(error));
-      errorToaster("Oops!", error.message)
+      errorToaster("Oops!", error.response.data.message)
       console.log((error, "error get blockchain details"));
     }
   };

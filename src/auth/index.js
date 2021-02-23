@@ -1,6 +1,7 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
 import { Route, Redirect, useHistory } from "react-router-dom";
 import axios from "axios";
+import { errorToaster } from "../utils/toaster";
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -21,13 +22,14 @@ const fakeAuth = {
         cb();
       }
     } catch (error) {
+      errorToaster("Oops!", error.response.data.message)
       console.log(error);
     }
   },
   signout(cb) {
     fakeAuth.isAuthenticated = false;
     localStorage.clear();
-    cb()
+    cb();
     // setTimeout(cb, 100);
   },
 };

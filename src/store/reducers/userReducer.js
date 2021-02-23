@@ -4,6 +4,7 @@ const initialState = {
   email:"",
   password:"",
   company_name: "",
+  email: "",
   category: "",
   history: [],
   isLoading: false,

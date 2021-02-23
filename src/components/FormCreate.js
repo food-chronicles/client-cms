@@ -36,31 +36,35 @@ function FormCreate() {
 
   const handleImageUpload = (e) => {
     e.preventDefault();
-    const uploadTask = storage
-      .ref(`images/${localStorage.access_token + image.name}`)
-      .put(image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setUploadProgress(progress);
-      },
-      (error) => {
-        console.log(error, "ini error upload image");
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(localStorage.access_token + image.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImageUrl(url);
-            successToaster("Upload success", "Your image has been saved");
-          });
-      }
-    );
+    if (!image) {
+      errorToaster("Missing field!", "Please choose your image file first");
+    } else {
+      const uploadTask = storage
+        .ref(`images/${localStorage.access_token + image.name}`)
+        .put(image);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setUploadProgress(progress);
+        },
+        (error) => {
+          console.log(error, "ini error upload image");
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(localStorage.access_token + image.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImageUrl(url);
+              successToaster("Upload success", "Your image has been saved");
+            });
+        }
+      );
+    }
   };
 
   const handleInputChange = (e, index) => {
@@ -151,7 +155,7 @@ function FormCreate() {
             <label className="form-text mr-2 font-bold text-lg" htmlFor="name">
               Name
             </label>
-            <div className='justify-center'>
+            <div className="justify-center">
               <input
                 className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
                 onChange={handleName}
@@ -206,9 +210,10 @@ function FormCreate() {
               Upload
             </button>
           </div>
-          <div className='m-4 flex justify-center'>
+          {uploadProgress!== 0 && <div className="m-4 flex gap-4 justify-center">
             <progress value={uploadProgress} max="100" />
-          </div>
+            <small>Upload Progress: {uploadProgress}%</small>
+          </div>}
           {inputList.map((x, i) => {
             return (
               <div key={i}>

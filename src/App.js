@@ -14,6 +14,7 @@ import Create from "./pages/Create";
 import History from "./components/History";
 import Scan from "./pages/Scan";
 import ProductDetails from "./pages/ProductDetails";
+import UpdateUser from "./pages/UpdateUser";
 
 function App() {
   return (
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <PrivateRoute path="/product/:id">
             <ProductDetails />
+          </PrivateRoute>
+          <PrivateRoute path="/user/:id">
+            <UpdateUser />
           </PrivateRoute>
           <PrivateRoute path="/create">
             <Create />

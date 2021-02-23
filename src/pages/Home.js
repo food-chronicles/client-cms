@@ -3,6 +3,13 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../store/actions/userAction";
+import Lottie from 'lottie-react'
+import LoadingBall from '../assets/4316-loading-gaocaisheng.json'
+
+const style = {
+  height: 500,
+  width: 500,
+};
 
 function Home() {
   const dispatch = useDispatch();
@@ -20,7 +27,9 @@ function Home() {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <div className="container flex items-center justify-center h-screen">
+      <p><Lottie animationData={LoadingBall} style={style} /></p>;
+    </div>
   }
   if (error) {
     return <p>{error}</p>;
@@ -47,6 +56,16 @@ function Home() {
             <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
               {category}
             </p>
+          </div>
+          <div>
+            <Link to={`/user/${_id}`}>
+              <button
+                className="button-form py-2 px-4 rounded-lg"
+                type="submit"
+              >
+                Edit Profile
+              </button>
+            </Link>
           </div>
         </div>
 

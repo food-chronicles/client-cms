@@ -4,6 +4,7 @@ import { successToaster, errorToaster } from "../../utils/toaster";
 export function createBlockchain(payload) {
   return async (dispatch) => {
     try {
+      dispatch(setLoading(true));
       let newChain = await axios({
         url: "http://localhost:4000/product",
         method: "POST",
@@ -28,8 +29,10 @@ export function createBlockchain(payload) {
         type: "UPDATE_QRCODE_LINK",
         payload: newChain.data._id,
       });
+      dispatch(setLoading(false));
       successToaster("Success!", "Entry has been saved")
     } catch (error) {
+      dispatch(setLoading(false));
       errorToaster("Oops!", error.response.data.message)
       console.log(error.response.data, "error create blockchain");
     }
@@ -39,6 +42,7 @@ export function createBlockchain(payload) {
 export function updateBlockchain(id, payload) {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingUpdate(true));
       // console.log(id, payload, "ini di action");
       let newChain = await axios({
         url: "http://localhost:4000/product/" + id,
@@ -57,8 +61,10 @@ export function updateBlockchain(id, payload) {
         },
       });
       dispatch(getDetails(id));
+      dispatch(setLoadingUpdate(false));
       successToaster("Success!", "Entry has been saved")
     } catch (error) {
+      dispatch(setLoadingUpdate(false));
       errorToaster("Oops!", error.response.data.message)
     }
   };
@@ -90,6 +96,13 @@ export function getDetails(id) {
 function setLoading(status) {
   return {
     type: "SET_LOADING",
+    payload: status,
+  };
+}
+
+function setLoadingUpdate(status) {
+  return {
+    type: "SET_LOADING_UPDATE",
     payload: status,
   };
 }

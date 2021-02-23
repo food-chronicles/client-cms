@@ -8,8 +8,8 @@ import Lottie from "lottie-react";
 import LoadingBall from "../assets/4316-loading-gaocaisheng.json";
 
 const style = {
-  height: 500,
-  width: 500,
+  height: 200,
+  width: 200,
 };
 
 function FormUpdate() {
@@ -28,7 +28,7 @@ function FormUpdate() {
   const [inputList, setInputList] = useState([]);
   const [toggleUpdateForm, setToggleUpdateForm] = useState(false);
 
-  const { blockchainDetail, qrCodeLink, isLoading, error } = useSelector(
+  const { blockchainDetail, qrCodeLink, isLoadingUpdate, error } = useSelector(
     (state) => state.blockchain
   );
 
@@ -110,6 +110,11 @@ function FormUpdate() {
       return errorToaster("Missing field!", "Amount is required");
     }
 
+    if (amount <= 0) {
+      setAmount(1)
+      return errorToaster("Faulty input!", "Amount must be bigger than 0");
+    }
+
     if (!imageUrl) {
       return errorToaster("Missing field!", "Image must be uploaded");
     }
@@ -168,9 +173,9 @@ function FormUpdate() {
     setToggleUpdateForm(false);
   }
 
-  if (isLoading) {
+  if (isLoadingUpdate) {
     return (
-      <div className="container flex items-center justify-center h-screen">
+      <div className="container flex items-center justify-center">
         <p>
           <Lottie animationData={LoadingBall} style={style} />;
         </p>
@@ -222,6 +227,7 @@ function FormUpdate() {
                 <input
                   className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
                   onChange={handleAmount}
+                  value={amount}
                   type="number"
                   name="amount"
                   id="amount"
@@ -261,10 +267,12 @@ function FormUpdate() {
               </button>
             </div>
 
-            {uploadProgress!== 0 && <div className="mb-4 flex gap-4 justify-center">
-            <progress value={uploadProgress} max="100" />
-            <small>Upload Progress: {uploadProgress}%</small>
-          </div>}
+            {uploadProgress !== 0 && (
+              <div className="mb-4 flex gap-4 justify-center">
+                <progress value={uploadProgress} max="100" />
+                <small>Upload Progress: {uploadProgress}%</small>
+              </div>
+            )}
 
             {inputList.map((x, i) => {
               return (

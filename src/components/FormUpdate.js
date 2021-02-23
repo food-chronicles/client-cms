@@ -4,8 +4,8 @@ import { updateBlockchain } from "../store/actions/blockchainAction";
 import { useParams } from "react-router-dom";
 import { storage } from "../firebase";
 import { successToaster, errorToaster } from "../utils/toaster";
-import Lottie from 'lottie-react'
-import LoadingBall from '../assets/4316-loading-gaocaisheng.json'
+import Lottie from "lottie-react";
+import LoadingBall from "../assets/4316-loading-gaocaisheng.json";
 
 const style = {
   height: 500,
@@ -48,31 +48,35 @@ function FormUpdate() {
 
   const handleImageUpload = (e) => {
     e.preventDefault();
-    const uploadTask = storage
-      .ref(`images/${localStorage.access_token + image.name}`)
-      .put(image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setUploadProgress(progress);
-      },
-      (error) => {
-        console.log(error, "ini error upload image");
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(localStorage.access_token + image.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImageUrl(url);
-            successToaster("Upload success", "Your image has been saved");
-          });
-      }
-    );
+    if (!image) {
+      errorToaster("Missing field!", "Please choose your image file first");
+    } else {
+      const uploadTask = storage
+        .ref(`images/${localStorage.access_token + image.name}`)
+        .put(image);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setUploadProgress(progress);
+        },
+        (error) => {
+          console.log(error, "ini error upload image");
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(localStorage.access_token + image.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImageUrl(url);
+              successToaster("Upload success", "Your image has been saved");
+            });
+        }
+      );
+    }
   };
 
   const handleInputChange = (e, index) => {
@@ -157,15 +161,22 @@ function FormUpdate() {
 
   function handleCancel(e) {
     e.preventDefault();
-    setUniqueKey("")
-    setAmount("")
-    setToggleUpdateForm(false)
+    setUniqueKey("");
+    setAmount("");
+    setUploadProgress(0);
+    setInputList([]);
+    setToggleUpdateForm(false);
   }
 
   if (isLoading) {
-    return <div className="container flex items-center justify-center h-screen">
-      <p><Lottie animationData={LoadingBall} style={style} />;</p>;
-    </div>
+    return (
+      <div className="container flex items-center justify-center h-screen">
+        <p>
+          <Lottie animationData={LoadingBall} style={style} />;
+        </p>
+        ;
+      </div>
+    );
   }
   return (
     <>
@@ -177,134 +188,140 @@ function FormUpdate() {
           Update
         </button>
       )}
-      {toggleUpdateForm && <div className="max-w-xl mx-auto flex justify-center p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
-        <form className="flex flex-col">
-          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
-            <label className="form-text mr-2 font-bold text-lg" htmlFor="key">
-              Key
-            </label>
-            <div>
-              <input
-                className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
-                onChange={handleKey}
-                value={uniqueKey}
-                type="text"
-                name="key"
-                id="key"
-                required
-              />
-              {UniqueKeyError && (
-                <p className="text-red-500">Name must be filled</p>
-              )}
+      {toggleUpdateForm && (
+        <div className="max-w-xl mx-auto flex justify-center p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
+          <form className="flex flex-col">
+            <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
+              <label className="form-text mr-2 font-bold text-lg" htmlFor="key">
+                Key
+              </label>
+              <div>
+                <input
+                  className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
+                  onChange={handleKey}
+                  value={uniqueKey}
+                  type="text"
+                  name="key"
+                  id="key"
+                  required
+                />
+                {UniqueKeyError && (
+                  <p className="text-red-500">Name must be filled</p>
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
-            <label
-              className="form-text mr-3 font-bold text-lg"
-              htmlFor="amount"
-            >
-              Amount
-            </label>
-            <div>
-              <input
-                className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
-                onChange={handleAmount}
-                type="number"
-                name="amount"
-                id="amount"
-                required
-              />
-              {amountError && (
-                <p className="text-red-500">Amount must be filled</p>
-              )}
+            <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
+              <label
+                className="form-text mr-3 font-bold text-lg"
+                htmlFor="amount"
+              >
+                Amount
+              </label>
+              <div>
+                <input
+                  className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
+                  onChange={handleAmount}
+                  type="number"
+                  name="amount"
+                  id="amount"
+                  required
+                />
+                {amountError && (
+                  <p className="text-red-500">Amount must be filled</p>
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
-            <label className="form-text mr-3 font-bold text-lg" htmlFor="image">
-              Image
-            </label>
-            <div>
-              <input
-                className="border border-blue-400  w-full rounded-md py-2 px-3 text-grey-darknest"
-                onChange={handleImage}
-                type="file"
-                name="image"
-                id="image"
-                required
-              />
-              {/* {amountError && (
+            <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
+              <label
+                className="form-text mr-3 font-bold text-lg"
+                htmlFor="image"
+              >
+                Image
+              </label>
+              <div>
+                <input
+                  className="border border-blue-400  w-full rounded-md py-2 px-3 text-grey-darknest"
+                  onChange={handleImage}
+                  type="file"
+                  name="image"
+                  id="image"
+                  required
+                />
+                {/* {amountError && (
                 <p className="text-red-500">Amount must be filled</p>
               )} */}
+              </div>
+              <button
+                onClick={handleImageUpload}
+                className="border rounded-md border-blue-400 py-1 px-3 md:m-4 mt-4  self-center"
+              >
+                Upload
+              </button>
             </div>
-            <button
-              onClick={handleImageUpload}
-              className="border rounded-md border-blue-400 py-1 px-3 m-4 self-center"
-            >
-              Upload
-            </button>
-          </div>
-          <div>
-            <progress value={uploadProgress} max="100" />
-          </div>
 
-          {inputList.map((x, i) => {
-            return (
-              <div key={i}>
-                <div className="flex flex-col md:flex-row mb-4 items-center justify-between align-center">
-                  <input
-                    className="border border-blue-400 w-full mb-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
-                    name="key"
-                    placeholder="Enter Title"
-                    value={x.firstName}
-                    onChange={(e) => handleInputChange(e, i)}
-                    required
-                  />
-                  <input
-                    className="border border-blue-400  w-full mb-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
-                    name="value"
-                    placeholder="Enter Information"
-                    value={x.lastName}
-                    onChange={(e) => handleInputChange(e, i)}
-                    required
-                  />
-                  <div className="self-center">
-                    <button
-                      className="border rounded-md border-blue-400 py-1 px-3 mr-1"
-                      onClick={(e) => handleRemoveClick(e, i)}
-                    >
-                      -
-                    </button>
+            <div className="mb-4 flex justify-center">
+              <progress value={uploadProgress} max="100" />
+            </div>
+
+            {inputList.map((x, i) => {
+              return (
+                <div key={i}>
+                  <div className="flex flex-col md:flex-row mb-4 items-center justify-between align-center">
+                    <input
+                      className="border border-blue-400 w-full mb-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                      name="key"
+                      placeholder="Enter Title"
+                      value={x.firstName}
+                      onChange={(e) => handleInputChange(e, i)}
+                      required
+                    />
+                    <input
+                      className="border border-blue-400  w-full mb-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                      name="value"
+                      placeholder="Enter Information"
+                      value={x.lastName}
+                      onChange={(e) => handleInputChange(e, i)}
+                      required
+                    />
+                    <div className="self-center">
+                      <button
+                        className="border rounded-md border-blue-400 py-1 px-3 mr-1"
+                        onClick={(e) => handleRemoveClick(e, i)}
+                      >
+                        -
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
 
-          <div className="">
-            <button
-              className="border w-20 h-10 sm:h-10 sm:w-10 rounded-md border-blue-400 py-1 px-3 m-4 "
-              onClick={(e) => handleAddClick(e)}
-            >
-              +
-            </button>
-            <button
-              onClick={handleUpdate}
-              className="button-form py-2 px-4 rounded-lg m-4"
-              type="submit"
-            >
-              Update
-            </button>
-            <button
-              onClick={handleCancel}
-              className="bg-red-500 text-white py-2 px-4 my-2 rounded-md"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>}
+            <div className="">
+              <button
+                className="border w-20 h-10 sm:h-10 sm:w-10 rounded-md border-blue-400 py-1 px-3 m-4 "
+                onClick={(e) => handleAddClick(e)}
+              >
+                +
+              </button>
+              <button
+                onClick={handleUpdate}
+                className="button-form py-2 px-4 rounded-lg m-4"
+                type="submit"
+              >
+                Update
+              </button>
+              <button
+                onClick={handleCancel}
+                className="bg-red-500 text-white py-2 px-4 my-2 rounded-md"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </>
   );
 }

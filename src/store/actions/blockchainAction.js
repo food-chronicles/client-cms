@@ -73,12 +73,12 @@ export function getDetails(id) {
         url: "http://localhost:4000/product/" + id,
         method: "GET",
       });
-      dispatch(setLoading(false));
-      dispatch(setError(null));
       dispatch({
         type: "UPDATE_BLOCKCHAIN_DETAIL",
         payload: details.data,
       });
+      dispatch(setLoading(false));
+      dispatch(setError(null));
     } catch (error) {
       dispatch(setLoading(false));
       dispatch(setError(error));

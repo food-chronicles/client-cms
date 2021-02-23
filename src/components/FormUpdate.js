@@ -4,6 +4,13 @@ import { updateBlockchain } from "../store/actions/blockchainAction";
 import { useParams } from "react-router-dom";
 import { storage } from "../firebase";
 import { successToaster, errorToaster } from "../utils/toaster";
+import Lottie from 'lottie-react'
+import LoadingBall from '../assets/4316-loading-gaocaisheng.json'
+
+const style = {
+  height: 500,
+  width: 500,
+};
 
 function FormUpdate() {
   const dispatch = useDispatch();
@@ -155,6 +162,11 @@ function FormUpdate() {
     setToggleUpdateForm(false)
   }
 
+  if (isLoading) {
+    return <div className="container flex items-center justify-center h-screen">
+      <p><Lottie animationData={LoadingBall} style={style} />;</p>;
+    </div>
+  }
   return (
     <>
       {!toggleUpdateForm && (
@@ -167,13 +179,13 @@ function FormUpdate() {
       )}
       {toggleUpdateForm && <div className="max-w-xl mx-auto flex justify-center p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
         <form className="flex flex-col">
-          <div className="flex flex-row mb-4 justify-between">
+          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
             <label className="form-text mr-2 font-bold text-lg" htmlFor="key">
               Key
             </label>
             <div>
               <input
-                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
                 onChange={handleKey}
                 value={uniqueKey}
                 type="text"
@@ -187,7 +199,7 @@ function FormUpdate() {
             </div>
           </div>
 
-          <div className="flex flex-row mb-4 justify-between">
+          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
             <label
               className="form-text mr-3 font-bold text-lg"
               htmlFor="amount"
@@ -196,7 +208,7 @@ function FormUpdate() {
             </label>
             <div>
               <input
-                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
                 onChange={handleAmount}
                 type="number"
                 name="amount"
@@ -209,13 +221,13 @@ function FormUpdate() {
             </div>
           </div>
 
-          <div className="flex flex-row mb-4 justify-between">
+          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
             <label className="form-text mr-3 font-bold text-lg" htmlFor="image">
               Image
             </label>
             <div>
               <input
-                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                className="border border-blue-400  w-full rounded-md py-2 px-3 text-grey-darknest"
                 onChange={handleImage}
                 type="file"
                 name="image"
@@ -240,9 +252,9 @@ function FormUpdate() {
           {inputList.map((x, i) => {
             return (
               <div key={i}>
-                <div className="flex flex-row mb-4 justify-between align-middle">
+                <div className="flex flex-col md:flex-row mb-4 items-center justify-between align-center">
                   <input
-                    className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                    className="border border-blue-400 w-full mb-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                     name="key"
                     placeholder="Enter Title"
                     value={x.firstName}
@@ -250,7 +262,7 @@ function FormUpdate() {
                     required
                   />
                   <input
-                    className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                    className="border border-blue-400  w-full mb-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                     name="value"
                     placeholder="Enter Information"
                     value={x.lastName}
@@ -272,7 +284,7 @@ function FormUpdate() {
 
           <div className="">
             <button
-              className="border rounded-md border-blue-400 py-1 px-3 m-4 "
+              className="border w-20 h-10 sm:h-10 sm:w-10 rounded-md border-blue-400 py-1 px-3 m-4 "
               onClick={(e) => handleAddClick(e)}
             >
               +

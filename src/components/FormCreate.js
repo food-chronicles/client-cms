@@ -147,13 +147,13 @@ function FormCreate() {
     <div>
       {!qrCodeLink && (
         <form className="flex flex-col">
-          <div className="flex flex-row mb-4 justify-between">
+          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
             <label className="form-text mr-2 font-bold text-lg" htmlFor="name">
               Name
             </label>
-            <div>
+            <div className='justify-center'>
               <input
-                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
                 onChange={handleName}
                 type="text"
                 name="username"
@@ -164,7 +164,7 @@ function FormCreate() {
             </div>
           </div>
 
-          <div className="flex flex-row mb-4 justify-between">
+          <div className="flex flex-col md:flex-row mb-4 items-center justify-between">
             <label
               className="form-text mr-3 font-bold text-lg"
               htmlFor="amount"
@@ -173,7 +173,7 @@ function FormCreate() {
             </label>
             <div>
               <input
-                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
                 onChange={handleAmount}
                 type="number"
                 name="amount"
@@ -185,22 +185,19 @@ function FormCreate() {
               )}
             </div>
           </div>
-          <div className="flex flex-row mb-4 justify-between">
+          <div className="flex flex-col md:flex-row items-center justify-between">
             <label className="form-text mr-3 font-bold text-lg" htmlFor="image">
               Image
             </label>
             <div>
               <input
-                className="border border-blue-400 rounded-md py-2 px-3 text-grey-darknest"
+                className="border border-blue-400 w-full rounded-md py-2 px-3 text-grey-darknest"
                 onChange={handleImage}
                 type="file"
                 name="image"
                 id="image"
                 required
               />
-              {/* {amountError && (
-                <p className="text-red-500">Amount must be filled</p>
-              )} */}
             </div>
             <button
               onClick={handleImageUpload}
@@ -209,15 +206,15 @@ function FormCreate() {
               Upload
             </button>
           </div>
-          <div>
+          <div className='m-4 flex justify-center'>
             <progress value={uploadProgress} max="100" />
           </div>
           {inputList.map((x, i) => {
             return (
               <div key={i}>
-                <div className="flex flex-row mb-4 justify-between align-middle">
+                <div className="flex flex-col md:flex-row mb-4 items-center justify-between align-center">
                   <input
-                    className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                    className="border border-blue-400 w-full mt-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                     name="key"
                     placeholder="Enter Title"
                     value={x.firstName}
@@ -225,7 +222,7 @@ function FormCreate() {
                     required
                   />
                   <input
-                    className="border border-blue-400 rounded-md py-2 px-3 mr-2 text-grey-darknest"
+                    className="border border-blue-400 w-full mt-2 rounded-md py-2 px-3 mr-2 text-grey-darknest"
                     name="value"
                     placeholder="Enter Information"
                     value={x.lastName}
@@ -234,7 +231,7 @@ function FormCreate() {
                   />
                   <div className="self-center">
                     <button
-                      className="border rounded-md border-blue-400 py-1 px-3 mr-1"
+                      className="border rounded-md border-blue-400 mt-2 py-1 px-3 mr-1"
                       onClick={(e) => handleRemoveClick(e, i)}
                     >
                       -
@@ -247,7 +244,7 @@ function FormCreate() {
 
           <p className="">
             <button
-              className="border rounded-md border-blue-400 py-1 px-3 m-4 "
+              className="border w-20 h-10 sm:h-10 sm:w-10 rounded-md border-blue-400 py-1 px-3 m-4 "
               onClick={(e) => handleAddClick(e)}
             >
               +

@@ -4,6 +4,13 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getDetails } from "../store/actions/blockchainAction";
 import FormUpdate from "../components/FormUpdate";
+import Lottie from 'lottie-react'
+import LoadingBall from '../assets/4316-loading-gaocaisheng.json'
+
+const style = {
+  height: 500,
+  width: 500,
+};
 
 function ProductDetails() {
   const params = useParams();
@@ -17,11 +24,17 @@ function ProductDetails() {
     dispatch(getDetails(blockchainId));
   }, []);
 
+
+
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <div className="container flex items-center justify-center h-screen">
+      <p><Lottie animationData={LoadingBall} style={style} />;</p>;
+    </div>
   }
   if (error) {
-    return <p>{JSON.stringify(error)}</p>;
+    return <div className="container mx-auto p-6 text-center">
+      <p>{JSON.stringify(error)}</p>;
+    </div>
   }
   return (
     <div className="container mx-auto p-6 text-center">
@@ -29,7 +42,7 @@ function ProductDetails() {
       <h1 className="form-text font-bold text-2xl my-5 self-center">
         Product Details
       </h1>
-      <div className="grid grid-cols-2 my-5 py-5 justify-items-center border-b-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 m-4 my-5 py-5 justify-items-center border-b-4">
         <p>{blockchainDetail.name}</p>
         <div>
           <QRCode
@@ -39,7 +52,6 @@ function ProductDetails() {
       </div>
 
       <h1 className="form-text font-bold text-2xl">History</h1>
-      
       <FormUpdate />
       {blockchainDetail.chain
         .slice(0)
@@ -48,9 +60,9 @@ function ProductDetails() {
           return (
             <div
               key={history.index}
-              className="mx-auto max-w-lg p-6 mt-4 bg-white rounded-lg shadow-xl"
+              className="mx-auto max-w-lg mb-2 p-6 mt-4 bg-white rounded-lg shadow-xl"
             >
-              <div className="grid grid-cols-2">
+              <div className="grid grid-cols-1 md:grid-cols-2">
                 <p className="self-center">{history.timestamp}</p>
                 <div>
                   <div>

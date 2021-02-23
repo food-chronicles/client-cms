@@ -2,6 +2,13 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserHistory } from "../store/actions/userAction";
+import Lottie from 'lottie-react'
+import LoadingBall from '../assets/4316-loading-gaocaisheng.json'
+
+const style = {
+  height: 500,
+  width: 500,
+};
 
 const History = () => {
   const dispatch = useDispatch();
@@ -14,7 +21,9 @@ const History = () => {
   }, []);
 
   if (isLoadingHistory) {
-    return <p>Loading...</p>;
+    return <div className="container flex items-center justify-center h-screen">
+      <p><Lottie animationData={LoadingBall} style={style} />;</p>;
+    </div>
   }
   if (error) {
     return <p>{error}</p>;

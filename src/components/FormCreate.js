@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createBlockchain } from "../store/actions/blockchainAction";
 import { storage } from "../firebase";
 import { successToaster, errorToaster } from "../utils/toaster";
+import Lottie from "lottie-react";
+import LoadingBall from "../assets/4316-loading-gaocaisheng.json";
 
 function FormCreate() {
   const [name, setName] = useState("");
@@ -99,6 +101,11 @@ function FormCreate() {
       return errorToaster("Missing field!", "Amount is required");
     }
 
+    if (amount <= 0) {
+      setAmount(1)
+      return errorToaster("Faulty!", "Amount must be bigger than 0");
+    }
+
     if (!imageUrl) {
       return errorToaster("Missing field!", "Image must be uploaded");
     }
@@ -147,6 +154,30 @@ function FormCreate() {
     }
   }
 
+  const style = {
+    height: 200,
+    width: 200,
+  };
+  console.log(isLoading, 'status loading')
+
+  if (isLoading) {
+    return (
+      <div className="container flex items-center justify-center">
+        <p>
+          <Lottie animationData={LoadingBall} style={style} />;
+        </p>
+        ;
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="container mx-auto p-6 text-center">
+        <p>{JSON.stringify(error)}</p>;
+      </div>
+    );
+  }
+
   return (
     <div>
       {!qrCodeLink && (
@@ -182,6 +213,7 @@ function FormCreate() {
                 type="number"
                 name="amount"
                 id="amount"
+                value={amount}
                 required
               />
               {amountError && (

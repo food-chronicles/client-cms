@@ -111,7 +111,7 @@ function FormUpdate() {
     }
 
     if (amount <= 0) {
-      setAmount(1)
+      setAmount(1);
       return errorToaster("Faulty input!", "Amount must be bigger than 0");
     }
 
@@ -176,10 +176,7 @@ function FormUpdate() {
   if (isLoadingUpdate) {
     return (
       <div className="container flex items-center justify-center">
-        <p>
-          <Lottie animationData={LoadingBall} style={style} />;
-        </p>
-        ;
+        <Lottie animationData={LoadingBall} style={style} />
       </div>
     );
   }

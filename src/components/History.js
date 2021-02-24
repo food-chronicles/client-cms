@@ -23,10 +23,7 @@ const History = () => {
   if (isLoadingHistory) {
     return (
       <div className="container flex items-center justify-center h-screen">
-        <p>
           <Lottie animationData={LoadingBall} style={style} />
-        </p>
-        ;
       </div>
     );
   }

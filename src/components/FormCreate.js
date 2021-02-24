@@ -174,10 +174,7 @@ function FormCreate() {
   if (isLoading) {
     return (
       <div className="container flex items-center justify-center">
-        <p>
-          <Lottie animationData={LoadingBall} style={style} />;
-        </p>
-        ;
+          <Lottie animationData={LoadingBall} style={style} />
       </div>
     );
   }

@@ -25,11 +25,7 @@ function Scan() {
       <div className="flex justify-center">
         <img src={fc_logo_md} className="w-96" alt="logo"></img>
       </div>
-      {/* <h1 className="logo-fc text-2xl text-blue-700 leading-tight">
-        <span className="logo-food-color">Food</span> Chronicles
-      </h1> */}
       <h2 className="text-lg">Scan your product</h2>
-      {/* <div className="flex justify-content-center "> */}
       <div>
         <div className="mx-auto max-w-lg p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
           <QrReader

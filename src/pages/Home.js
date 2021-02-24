@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo } from "../store/actions/userAction";
-import Lottie from 'lottie-react'
-import LoadingBall from '../assets/4316-loading-gaocaisheng.json'
+import Lottie from "lottie-react";
+import LoadingBall from "../assets/4316-loading-gaocaisheng.json";
 
 const style = {
   height: 500,
@@ -28,9 +28,11 @@ function Home() {
   }, []);
 
   if (isLoading) {
-    return <div className="container flex items-center justify-center h-screen">
-      <p><Lottie animationData={LoadingBall} style={style} /></p>;
-    </div>
+    return (
+      <div className="container flex items-center justify-center h-screen">
+        <Lottie animationData={LoadingBall} style={style} />
+      </div>
+    );
   }
   if (error) {
     return <p>{JSON.stringify(error)}</p>;

@@ -93,6 +93,7 @@ export function getDetails(id) {
   };
 }
 
+
 function setLoading(status) {
   return {
     type: "SET_LOADING",

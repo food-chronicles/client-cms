@@ -6,6 +6,7 @@ const initialState = {
   company_name: "",
   email: "",
   category: "",
+  textSearch: "",
   history: [],
   isLoading: false,
   isLoadingHistory: false,
@@ -31,6 +32,15 @@ const userReducer = (state = initialState, action) => {
         ...state,
         history
       };
+
+      case "SEARCH_ITEM":
+        const search = action.payload;
+        console.log(search, 'from redux');
+        return {
+          ...state,
+          textSearch: action.text,
+          history: search
+        };
 
     case "SET_LOADING":
       return {

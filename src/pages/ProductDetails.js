@@ -122,7 +122,7 @@ function ProductDetails() {
         <FormUpdate />
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-4 no-wrap md:mx-2 mb-10">
+      <div className="flex flex-col md:flex-row gap-4 no-wrap md:mx-2 mb-10">
         {/* Bagian Kiri */}
         <div className="w-full md:w-2/3 md:mx-2 mb-5 md:mb-0">
           {blockchainDetail.chain

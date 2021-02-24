@@ -134,7 +134,7 @@ function ProductDetails() {
               return (
                 <section
                   key={index}
-                  className="mx-auto md:max-w-2xl mb-2 p-6 mt-4 bg-white rounded-lg shadow-xl"
+                  className="mx-auto mb-2 p-6 mt-4 bg-white rounded-lg shadow-xl"
                 >
                   <div className="flex flex-col md:flex-row gap-5">
                     <div className="md:w-1/3 overflow-hidden">
@@ -208,6 +208,7 @@ function ProductDetails() {
                 >
                   {markers.map((marker, index) => (
                     <Marker
+                      label={blockchainDetail.chain[index].user.category}
                       key={index}
                       position={{
                         lat: Number(marker?.latitude),

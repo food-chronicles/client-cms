@@ -6,7 +6,7 @@ export function getUserInfo() {
     try {
       dispatch(setLoading(true));
       let userInfo = await axios({
-        url: "http://localhost:4000/user",
+        url: process.env.REACT_APP_SERVER_URL + "/user",
         method: "GET",
         headers: {
           access_token: localStorage.access_token,
@@ -31,7 +31,7 @@ export function getUserHistory() {
     try {
       dispatch(setLoadingHistory(true));
       let userHistory = await axios({
-        url: "http://localhost:4000/product",
+        url: process.env.REACT_APP_SERVER_URL + "/product",
         method: "GET",
         headers: {
           access_token: localStorage.access_token,
@@ -62,7 +62,7 @@ export const filterHistory = (text) => {
   return async (dispatch) => {
     // dispatch(setLoading(true));
     try {
-      let url = `http://localhost:4000/product?search=${text}`
+      let url = process.env.REACT_APP_SERVER_URL + `/product?search=${text}`
       let productInfo = await axios({
         url,
         method: "GET",
@@ -88,7 +88,7 @@ export const filterHistory = (text) => {
 export const updateUser = (data, id) => {
   return async (dispatch) => {
     try {
-      let url = `http://localhost:4000/user`;
+      let url = process.env.REACT_APP_SERVER_URL + `/user`;
       let payload = {
         username: data.username,
         email: data.email,
@@ -103,7 +103,7 @@ export const updateUser = (data, id) => {
           },
         },
       });
-      successToaster("Upload success", "Your profile has been updated");
+      successToaster("Success", "Your profile has been updated");
       localStorage.access_token = response.data.access_token;
       dispatch(getUserInfo())
       console.log(response, "dari upadte user");

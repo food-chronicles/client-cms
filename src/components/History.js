@@ -46,7 +46,7 @@ const History = () => {
           </div>
         )}
         {filteredHistory.length > 0 &&
-          filteredHistory.map((historyItem) => {
+          filteredHistory.slice(0).reverse().map((historyItem) => {
             return (
               <Link
                 to={`product/${historyItem._id}`}
@@ -62,8 +62,10 @@ const History = () => {
                   <h2 className="text-gray-800 capitalize text-xl font-bold">
                     {historyItem.name}
                   </h2>
-                  <p className="capitalize underline inline-block pt-2">
+                  <p className="inline-block pt-2">
+                    <span className="underline">
                     {historyItem._id}
+                    </span>
                   </p>
                 </div>
               </Link>

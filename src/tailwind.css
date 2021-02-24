@@ -15,22 +15,26 @@
 }
 
 .logo-food-color {
-  color: #16ABFF;
+  color: #16abff;
 }
 
 .logo-chronicles {
-  color: #003C68;
+  color: #003c68;
 }
 
 .form-text {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-style: normal;
   font-weight: normal;
-  color: #16ABFF;
+  color: #16abff;
 }
 
 .button-form {
-  background-color: #16ABFF !important;
+  background-color: #16abff !important;
   border-radius: 5px;
   color: white;
+}
+
+.button-form:hover {
+  background-color: #003c68 !important;
 }

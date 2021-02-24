@@ -1,6 +1,6 @@
 const initialState = {
   blockchainDetail: {
-    chain: []
+    chain: [],
   },
   qrCodeLink: "",
   isLoading: false,
@@ -20,7 +20,14 @@ const blockchainReducer = (state = initialState, action) => {
     case "UPDATE_QRCODE_LINK":
       return {
         ...state,
-        qrCodeLink: "http://localhost:3000/product/" + action.payload,
+        qrCodeLink:
+          process.env.REACT_APP_CLIENT_URL + "/product/" + action.payload,
+      };
+
+    case "RESET_QR_CODE_LINK":
+      return {
+        ...state,
+        qrCodeLink: "",
       };
 
     case "SET_LOADING":

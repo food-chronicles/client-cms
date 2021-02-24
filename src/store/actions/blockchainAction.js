@@ -7,7 +7,7 @@ export function createBlockchain(payload) {
     try {
       dispatch(setLoading(true));
       let newChain = await axios({
-        url: "http://localhost:4000/product",
+        url: process.env.REACT_APP_SERVER_URL + "/product",
         method: "POST",
         headers: {
           access_token: localStorage.access_token,
@@ -31,7 +31,7 @@ export function createBlockchain(payload) {
         payload: newChain.data._id,
       });
       dispatch(setLoading(false));
-      successToaster("Success!", "Entry has been saved");
+      successToaster("Success!", "Information has been sent to your email");
     } catch (error) {
       dispatch(setLoading(false));
       errorToaster("Oops!", error.response.data.message);
@@ -40,13 +40,19 @@ export function createBlockchain(payload) {
   };
 }
 
+export function resetQRCodeLink() {
+  return {
+    type: "RESET_QR_CODE_LINK"
+  }
+}
+
 export function updateBlockchain(id, payload) {
   return async (dispatch) => {
     try {
       dispatch(setLoadingUpdate(true));
       // console.log(id, payload, "ini di action");
       let newChain = await axios({
-        url: "http://localhost:4000/product/" + id,
+        url: process.env.REACT_APP_SERVER_URL + "/product/" + id,
         method: "PUT",
         headers: {
           access_token: localStorage.access_token,
@@ -63,7 +69,7 @@ export function updateBlockchain(id, payload) {
       });
       dispatch(getDetails(id));
       dispatch(setLoadingUpdate(false));
-      successToaster("Success!", "Entry has been saved");
+      successToaster("Success!", "Information has been sent to your email");
       dispatch(getUserHistory())
     } catch (error) {
       dispatch(setLoadingUpdate(false));
@@ -77,7 +83,7 @@ export function getDetails(id) {
     dispatch(setLoading(true));
     try {
       let details = await axios({
-        url: "http://localhost:4000/product/" + id,
+        url: process.env.REACT_APP_SERVER_URL + "/product/" + id,
         method: "GET",
       });
       dispatch({

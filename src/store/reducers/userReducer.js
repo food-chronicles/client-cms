@@ -11,6 +11,7 @@ const initialState = {
   isLoading: false,
   isLoadingHistory: false,
   error: null,
+  success: false
 };
 
 const userReducer = (state = initialState, action) => {
@@ -34,9 +35,16 @@ const userReducer = (state = initialState, action) => {
         filteredHistory: history
       };
 
+    case "UPDATED_USER":
+      console.log('From redux : state ',action.payload);
+      return {
+        ...state,
+        success: action.payload
+      };
+
     case "SET_SEARCH":
       return {
-        ...state, 
+        ...state,
         search: action.payload
       }
 

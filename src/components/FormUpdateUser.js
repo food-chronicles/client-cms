@@ -20,12 +20,12 @@ const FormUpdateUser = () => {
     company_name:dataCompany,
     category:dataCategory,
     isLoading,
+    success,
     error,
   } = useSelector((state) => state.user);
-
+  console.log(success, 'mmmm');
   useEffect(() => {
     dispatch(getUserInfo());
-
     setUsername(dataUsername)
     setEmail(dataEmail)
     setCompany(dataCompany)
@@ -70,8 +70,13 @@ const FormUpdateUser = () => {
       category
     }
     dispatch(updateUser(payload, id))
-    history.push('/')
   }
+
+  useEffect(() => {
+    if (success === true) {
+      history.push('/')
+    }
+  }, [success])
 
   return (
     <div className="max-w-md mx-auto justify-center p-6 flex bg-gray-100 mt-10 rounded shadow-xl">

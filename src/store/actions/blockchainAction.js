@@ -42,8 +42,8 @@ export function createBlockchain(payload) {
 
 export function resetQRCodeLink() {
   return {
-    type: "RESET_QR_CODE_LINK"
-  }
+    type: "RESET_QR_CODE_LINK",
+  };
 }
 
 export function updateBlockchain(id, payload) {
@@ -69,7 +69,7 @@ export function updateBlockchain(id, payload) {
       dispatch(getDetails(id));
       dispatch(setLoadingUpdate(false));
       successToaster("Success!", "Information has been sent to your email");
-      dispatch(getUserHistory())
+      dispatch(getUserHistory());
     } catch (error) {
       dispatch(setLoadingUpdate(false));
       errorToaster("Oops!", error.response.data.message);
@@ -93,8 +93,14 @@ export function getDetails(id) {
       dispatch(setError(null));
     } catch (error) {
       dispatch(setLoading(false));
-      dispatch(setError(error));
+      if (error.response.status === 404) {
+        dispatch(setError(404));
+        dispatch(setError(false));
+      } else {
+        dispatch(setError(error));
+      }
       errorToaster("Oops!", error.response.data.message);
+      console.log(error.response);
       console.log((error, "error get blockchain details"));
     }
   };

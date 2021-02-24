@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getDetails } from "../store/actions/blockchainAction";
 import FormUpdate from "../components/FormUpdate";
@@ -28,6 +28,7 @@ const style = {
 
 function ProductDetails() {
   const params = useParams();
+  const history = useHistory();
   const dispatch = useDispatch();
   const blockchainId = params.id;
   const { blockchainDetail, qrCodeLink, isLoading, error } = useSelector(
@@ -68,6 +69,9 @@ function ProductDetails() {
         <Lottie animationData={LoadingBall} style={style} />
       </div>
     );
+  }
+  if (error === 404) {
+    history.push("/");
   }
   if (error) {
     return (
@@ -235,23 +239,25 @@ function ProductDetails() {
                       onCloseClick={() => setSelected({})}
                     >
                       <div className="p-1">
-                        <small className="my-2">{dateFormatLong(selected.timestamp)}</small>
+                        <small className="my-2">
+                          {dateFormatLong(selected.timestamp)}
+                        </small>
                         <p className="font-bold mt-1">
                           {selected.user.company_name}
                         </p>
                         <p className="mb-2">{selected.user.category}</p>
                         {Object.keys(selected.data)
-                              .sort(function (a, b) {
-                                return b - a;
-                              })
-                              .map((key, index) => {
-                                return (
-                                  <p key={index}>
-                                    <small>{capitalizeFirstLetter(key)}</small>:{" "}
-                                    {selected.data[key]}
-                                  </p>
-                                );
-                              })}
+                          .sort(function (a, b) {
+                            return b - a;
+                          })
+                          .map((key, index) => {
+                            return (
+                              <p key={index}>
+                                <small>{capitalizeFirstLetter(key)}</small>:{" "}
+                                {selected.data[key]}
+                              </p>
+                            );
+                          })}
                       </div>
                     </InfoWindow>
                   )}

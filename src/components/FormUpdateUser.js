@@ -96,7 +96,10 @@ const FormUpdateUser = () => {
                   <option value="Retail">Retail</option>
                 </select>
               </div>
-              <button className='button-form p-2 rounded-lg' type="submit">Save</button>
+              <button className='button-form p-2 m-2 rounded-lg' type="submit">Save</button>
+              <Link to='/'>
+                <button className='button-form p-2 m-2 rounded-lg' type="reset">Cancel</button>
+              </Link>
           </form>
     </div>
   );

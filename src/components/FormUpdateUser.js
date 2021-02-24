@@ -77,19 +77,19 @@ const FormUpdateUser = () => {
     <div className="max-w-md mx-auto justify-center p-6 flex bg-gray-100 mt-10 rounded shadow-xl">
           <form className='w-full' action='' onSubmit={handleLogin}>
               <div className='flex flex-col w-full text-left mb-4'>
-                <label className='form-text mr-2 font-bold text-lg' for="username">Username</label>
+                <label className='form-text mr-2 font-bold text-lg' htmlFor="username">Username</label>
                 <input className='border w-full border-blue-400 rounded-md py-2 px-3 text-grey-darknest' onChange={handleUsername} type="text" name="username" id="username" value={username} />
               </div>
               <div className='flex flex-col w-full text-left mb-4'>
-                <label className='form-text mr-2 font-bold text-lg' for="email">Email</label>
+                <label className='form-text mr-2 font-bold text-lg' htmlFor="email">Email</label>
                 <input className='border w-full border-blue-400 rounded-md py-2 px-3 text-grey-darknest' onChange={handleEmail} type="text" name="email" id="email" value={email} />
               </div>
               <div className='flex flex-col w-full text-left mb-4'>
-                <label className='form-text mr-2 font-bold text-lg' for="company">Company Name</label>
+                <label className='form-text mr-2 font-bold text-lg' htmlFor="company">Company Name</label>
                 <input className='border border-blue-400 rounded-md py-2 px-3 text-grey-darknest' onChange={handleCompany} type="text" name="company" id="company" value={company_name} />
               </div>
               <div className='flex flex-col w-full text-left mb-4'>
-                <label className='form-text mr-2 font-bold text-lg' for="category">category</label>
+                <label className='form-text mr-2 font-bold text-lg' htmlFor="category">category</label>
                 <select className='border w-full border-blue-400 rounded-md py-2 px-3 text-grey-darknest' value={category} onChange={handleCategory} name="category" id="category">
                   <option value="Producer">Producer</option>
                   <option value="Manufacture">Manufacture</option>

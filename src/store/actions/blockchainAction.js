@@ -1,5 +1,6 @@
 import axios from "axios";
 import { successToaster, errorToaster } from "../../utils/toaster";
+import { getUserHistory } from "./userAction";
 
 export function createBlockchain(payload) {
   return async (dispatch) => {
@@ -30,10 +31,10 @@ export function createBlockchain(payload) {
         payload: newChain.data._id,
       });
       dispatch(setLoading(false));
-      successToaster("Success!", "Entry has been saved")
+      successToaster("Success!", "Entry has been saved");
     } catch (error) {
       dispatch(setLoading(false));
-      errorToaster("Oops!", error.response.data.message)
+      errorToaster("Oops!", error.response.data.message);
       console.log(error.response.data, "error create blockchain");
     }
   };
@@ -62,10 +63,11 @@ export function updateBlockchain(id, payload) {
       });
       dispatch(getDetails(id));
       dispatch(setLoadingUpdate(false));
-      successToaster("Success!", "Entry has been saved")
+      successToaster("Success!", "Entry has been saved");
+      dispatch(getUserHistory())
     } catch (error) {
       dispatch(setLoadingUpdate(false));
-      errorToaster("Oops!", error.response.data.message)
+      errorToaster("Oops!", error.response.data.message);
     }
   };
 }
@@ -87,12 +89,11 @@ export function getDetails(id) {
     } catch (error) {
       dispatch(setLoading(false));
       dispatch(setError(error));
-      errorToaster("Oops!", error.response.data.message)
+      errorToaster("Oops!", error.response.data.message);
       console.log((error, "error get blockchain details"));
     }
   };
 }
-
 
 function setLoading(status) {
   return {

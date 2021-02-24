@@ -212,11 +212,11 @@ function ProductDetails() {
                 <GoogleMap
                   mapContainerStyle={containerStyle}
                   center={mapCenter}
-                  zoom={6}
+                  zoom={5}
                 >
                   {markers.map((marker, index) => (
                     <Marker
-                      label={blockchainDetail.chain[index].user.category}
+                      // label={blockchainDetail.chain[index].user.category}
                       key={index}
                       position={{
                         lat: Number(marker?.latitude),
@@ -234,12 +234,24 @@ function ProductDetails() {
                       clickable={true}
                       onCloseClick={() => setSelected({})}
                     >
-                      <div>
-                        <p className="font-bold">
+                      <div className="p-1">
+                        <small className="my-2">{dateFormatLong(selected.timestamp)}</small>
+                        <p className="font-bold mt-1">
                           {selected.user.company_name}
                         </p>
-                        <p>{selected.user.category}</p>
-                        <small>{dateFormatLong(selected.timestamp)}</small>
+                        <p className="mb-2">{selected.user.category}</p>
+                        {Object.keys(selected.data)
+                              .sort(function (a, b) {
+                                return b - a;
+                              })
+                              .map((key, index) => {
+                                return (
+                                  <p key={index}>
+                                    <small>{capitalizeFirstLetter(key)}</small>:{" "}
+                                    {selected.data[key]}
+                                  </p>
+                                );
+                              })}
                       </div>
                     </InfoWindow>
                   )}

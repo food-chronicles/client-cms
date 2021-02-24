@@ -51,6 +51,34 @@ export function getUserHistory() {
   };
 }
 
+export const searchProduct = (text) => {
+  return async (dispatch) => {
+    dispatch(setLoading(true));
+    try {
+      let url = `http://localhost:4000/product?search=${text}`
+      let productInfo = await axios({
+        url,
+        method: "GET",
+        headers: {
+          access_token: localStorage.access_token,
+        },
+      });
+      dispatch({
+        type: "SEARCH_ITEM",
+        payload: productInfo.data,
+        text,
+      });
+      dispatch(setLoading(false));
+      dispatch(setError(null));
+    } catch (error) {
+      dispatch(setLoading(false));
+      dispatch(setError(error));
+      errorToaster("Oops!", error.response.data.message)
+      console.log(error)
+    }
+  }
+}
+
 export const updateUser = (data, id) => {
   return async (dispatch) => {
     try {

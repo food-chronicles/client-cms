@@ -18,11 +18,10 @@ const fakeAuth = {
       if (response) {
         fakeAuth.isAuthenticated = true;
         localStorage.access_token = response.data.access_token;
-        console.log(response.data, "ini dari fakeauth signin");
         cb();
       }
     } catch (error) {
-      errorToaster("Oops!", error.response.data.message)
+      errorToaster("Oops!", error?.response?.data?.message)
       console.log(error);
     }
   },

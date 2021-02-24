@@ -50,7 +50,6 @@ export function updateBlockchain(id, payload) {
   return async (dispatch) => {
     try {
       dispatch(setLoadingUpdate(true));
-      // console.log(id, payload, "ini di action");
       let newChain = await axios({
         url: process.env.REACT_APP_SERVER_URL + "/product/" + id,
         method: "PUT",

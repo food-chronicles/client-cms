@@ -11,7 +11,6 @@ const initialState = {
 const blockchainReducer = (state = initialState, action) => {
   switch (action.type) {
     case "UPDATE_BLOCKCHAIN_DETAIL":
-      // console.log(action.payload, "ini di reducer berhasil bikin baru");
       return {
         ...state,
         blockchainDetail: action.payload,

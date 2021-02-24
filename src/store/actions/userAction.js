@@ -106,7 +106,6 @@ export const updateUser = (data, id) => {
       successToaster("Success", "Your profile has been updated");
       localStorage.access_token = response.data.access_token;
       dispatch(getUserInfo())
-      console.log(response, "dari update user");
       dispatch({
         type: "UPDATED_USER",
         payload: true,

@@ -18,7 +18,7 @@ const History = () => {
   );
 
   useEffect(() => {
-    dispatch(getUserHistory());
+    // dispatch(getUserHistory());
   }, []);
 
   if (isLoadingHistory) {
@@ -39,9 +39,9 @@ const History = () => {
         {filteredHistory.length === 0 && (
           <div className="mt-20">
             <h1 className="text-center">There's no record yet</h1>
-            <h1>
-              Start by <Link to="/scan">Scanning a QR Code</Link> or by{" "}
-              <Link to="/create">Creating a new product chain</Link>
+            <h1 children="text-center">
+              Start by <Link to="/scan" className="underline">Scanning a QR Code</Link> or by{" "}
+              <Link to="/create" className="underline">Creating a new product chain</Link>
             </h1>
           </div>
         )}

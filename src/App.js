@@ -10,8 +10,8 @@ import {
 import { ProvideAuth, AuthButton, useAuth, PrivateRoute } from "./auth";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Create from "./pages/Create";
-import History from "./components/History";
 import Scan from "./pages/Scan";
 import ProductDetails from "./pages/ProductDetails";
 import UpdateUser from "./pages/UpdateUser";
@@ -24,7 +24,6 @@ function App() {
         <Switch>
           <PrivateRoute exact path="/">
             <Home />
-            {/* <History /> */}
           </PrivateRoute>
           <Route path="/login">
             <Login />
@@ -41,10 +40,8 @@ function App() {
           <PrivateRoute path="/scan">
             <Scan />
           </PrivateRoute>
-          <PrivateRoute path="/history">
-            <History />
-          </PrivateRoute>
         </Switch>
+        {/* <Footer /> */}
       </Router>
     </ProvideAuth>
   );

@@ -23,7 +23,7 @@ const FormUpdateUser = () => {
     success,
     error,
   } = useSelector((state) => state.user);
-  console.log(success, 'mmmm');
+
   useEffect(() => {
     dispatch(getUserInfo());
     setUsername(dataUsername)
@@ -45,7 +45,6 @@ const FormUpdateUser = () => {
   }
 
   const handleCategory = (e) => {
-    console.log(e.target.value);
     setCategory(e.target.value)
   }
 

@@ -38,3 +38,7 @@
 .button-form:hover {
   background-color: #003c68 !important;
 }
+
+#menu-toggle:checked + #menu {
+  display: block;
+}

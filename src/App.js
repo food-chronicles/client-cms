@@ -41,7 +41,7 @@ function App() {
             <Scan />
           </PrivateRoute>
         </Switch>
-        {/* <Footer /> */}
+        <Footer />
       </Router>
     </ProvideAuth>
   );

@@ -3,7 +3,7 @@ import fc_logo_md from "../assets/fc_logo_md.png";
 
 function Create() {
   return (
-    <div className="container mx-auto p-6 text-center">
+    <div className="container mx-auto p-6 text-center mb-auto">
       <div className="flex justify-center">
         <img src={fc_logo_md} className="w-96" alt="logo"></img>
       </div>

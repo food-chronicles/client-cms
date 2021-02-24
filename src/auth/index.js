@@ -8,7 +8,7 @@ const fakeAuth = {
   async signin(payload, cb) {
     try {
       let response = await axios({
-        url: "http://localhost:4000/login",
+        url: process.env.REACT_APP_SERVER_URL + "/login",
         method: "POST",
         data: {
           username: payload.username,
@@ -30,7 +30,6 @@ const fakeAuth = {
     fakeAuth.isAuthenticated = false;
     localStorage.clear();
     cb();
-    // setTimeout(cb, 100);
   },
 };
 

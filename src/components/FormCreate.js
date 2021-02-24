@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import QRCode from "qrcode.react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlockchain } from "../store/actions/blockchainAction";
+import {
+  createBlockchain,
+  resetQRCodeLink,
+} from "../store/actions/blockchainAction";
 import { storage } from "../firebase";
 import { successToaster, errorToaster } from "../utils/toaster";
 import Lottie from "lottie-react";
@@ -35,7 +38,6 @@ function FormCreate() {
       setImage(e.target.files[0]);
     }
   };
-  
 
   const handleImageUpload = (e) => {
     e.preventDefault();
@@ -166,6 +168,17 @@ function FormCreate() {
     }
   }
 
+  function handleCreateAnother() {
+    setName("");
+    setAmount("");
+    setImage(null);
+    setImageUrl("");
+    setUploadProgress(0);
+    setIsDuplicateKey(false);
+    setInputList([]);
+    dispatch(resetQRCodeLink());
+  }
+
   const style = {
     height: 200,
     width: 200,
@@ -175,7 +188,7 @@ function FormCreate() {
   if (isLoading) {
     return (
       <div className="container flex items-center justify-center">
-          <Lottie animationData={LoadingBall} style={style} />
+        <Lottie animationData={LoadingBall} style={style} />
       </div>
     );
   }
@@ -309,12 +322,20 @@ function FormCreate() {
       )}
       {qrCodeLink && (
         <div>
-          <p>Your QR Code:</p>
+          <h1 className="text-md">Your QR Code:</h1>
           <div className="flex justify-center mx-auto m-5">
             <QRCode value={qrCodeLink} />
           </div>
-          <p>Unique key to update:</p>
-          <p>{blockchainDetail.chain[blockchainDetail.chain.length - 1].key}</p>
+          <h1 className="text-md">Unique key to update:</h1>
+          <p className="text-lg italic font-bold">
+            {blockchainDetail.chain[blockchainDetail.chain.length - 1].key}
+          </p>
+          <h1 className="text-md my-5">
+            We've also sent this information to your email
+          </h1>
+          <button onClick={handleCreateAnother} className="button-form py-2 px-4 rounded-lg">
+            Create another entry
+          </button>
         </div>
       )}
     </div>

@@ -11,6 +11,7 @@ import {
   LoadScript,
   Marker,
   InfoWindow,
+  Polyline,
 } from "@react-google-maps/api";
 import { dateFormatLong } from "../utils/dateFormat";
 import capitalizeFirstLetter from "../utils/capitalizeFirstLetter";
@@ -34,6 +35,11 @@ function ProductDetails() {
   );
 
   const [markers, setMarkers] = useState([]);
+  const [selected, setSelected] = useState({});
+  const onSelect = (item) => {
+    setSelected(item);
+    console.log(selected, "ini yang dipilih");
+  };
 
   useEffect(() => {
     setMarkers(
@@ -89,14 +95,14 @@ function ProductDetails() {
               {blockchainDetail._id}
             </p> */}
             <div>
-              <span className="text-gray-600 font-lg text-semibold leading-6">
+              <span className="text-gray-500 font-lg text-semibold leading-6">
                 Created at:{" "}
               </span>
               <span className="text-bold text-gray-900">
                 {dateFormatLong(blockchainDetail?.chain[0]?.timestamp)}
               </span>
             </div>
-            <h3 className="text-gray-600 font-lg text-semibold leading-6">
+            <h3 className="text-gray-500 font-lg text-semibold leading-6">
               Last updated:{" "}
               <span className="text-bold text-gray-900">
                 {dateFormatLong(
@@ -111,7 +117,11 @@ function ProductDetails() {
         <div className="w-full md:w-3/12 mx-2 self-center flex justify-center">
           <div className="mx-auto">
             <QRCode
-              value={"http://localhost:3000/product/" + blockchainDetail._id}
+              value={
+                process.env.REACT_APP_CLIENT_URL +
+                "/product/" +
+                blockchainDetail._id
+              }
             />
           </div>
         </div>
@@ -151,7 +161,7 @@ function ProductDetails() {
                       <small className="uppercase text-blue-400">
                         {dateFormatLong(history.timestamp)}
                       </small>
-                      <div className="mb-2">
+                      <div className="my-2">
                         <h3 className="text-2xl font-semibold">
                           {history.user.company_name}
                         </h3>
@@ -202,25 +212,80 @@ function ProductDetails() {
                 <GoogleMap
                   mapContainerStyle={containerStyle}
                   center={mapCenter}
-                  zoom={6}
+                  zoom={5}
                 >
                   {markers.map((marker, index) => (
                     <Marker
-                      label={blockchainDetail.chain[index].user.category}
+                      // label={blockchainDetail.chain[index].user.category}
                       key={index}
                       position={{
                         lat: Number(marker?.latitude),
                         lng: Number(marker?.longitude),
                       }}
+                      onClick={() => onSelect(blockchainDetail.chain[index])}
                     />
                   ))}
-                  <></>
+                  {selected.location && (
+                    <InfoWindow
+                      position={{
+                        lat: selected.location.latitude,
+                        lng: selected.location.longitude,
+                      }}
+                      clickable={true}
+                      onCloseClick={() => setSelected({})}
+                    >
+                      <div className="p-1">
+                        <small className="my-2">{dateFormatLong(selected.timestamp)}</small>
+                        <p className="font-bold mt-1">
+                          {selected.user.company_name}
+                        </p>
+                        <p className="mb-2">{selected.user.category}</p>
+                        {Object.keys(selected.data)
+                              .sort(function (a, b) {
+                                return b - a;
+                              })
+                              .map((key, index) => {
+                                return (
+                                  <p key={index}>
+                                    <small>{capitalizeFirstLetter(key)}</small>:{" "}
+                                    {selected.data[key]}
+                                  </p>
+                                );
+                              })}
+                      </div>
+                    </InfoWindow>
+                  )}
+                  <Polyline
+                    path={blockchainDetail.chain.slice(1).map((stop) => {
+                      return {
+                        lat: stop.location.latitude,
+                        lng: stop.location.longitude,
+                      };
+                    })}
+                    options={{
+                      strokeColor: "#FF0000",
+                      strokeOpacity: 0.8,
+                      strokeWeight: 2,
+                      fillColor: "#FF0000",
+                      fillOpacity: 0.35,
+                    }}
+                  />
                 </GoogleMap>
               </LoadScript>
             </div>
           </div>
         )}
       </div>
+      <p>
+        {JSON.stringify(
+          blockchainDetail.chain.slice(1).map((stop) => {
+            return {
+              lat: stop.location.latitude,
+              lng: stop.location.longitude,
+            };
+          })
+        )}
+      </p>
 
       {/* {JSON.stringify(blockchainDetail.chain, null, 4)} */}
     </div>

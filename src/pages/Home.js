@@ -63,7 +63,7 @@ function Home() {
               {category}
             </p>
           </div>
-          <div>
+          <div className="flex justify-center md:justify-start">
             <Link to={`/user/${_id}`}>
               <button
                 className="button-form py-2 px-4 rounded-lg"

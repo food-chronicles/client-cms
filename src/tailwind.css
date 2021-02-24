@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .custom-color {
+  color: red;
+} */
+
+.logo-fc {
+  font-family: Poppins, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 54px;
+}
+
+.logo-food-color {
+  color: #16abff;
+}
+
+.logo-chronicles {
+  color: #003c68;
+}
+
+.form-text {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  color: #16abff;
+}
+
+.button-form {
+  background-color: #16abff !important;
+  border-radius: 5px;
+  color: white;
+}
+
+.button-form:hover {
+  background-color: #003c68 !important;
+}
+
+#menu-toggle:checked + #menu {
+  display: block;
+}

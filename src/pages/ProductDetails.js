@@ -276,7 +276,7 @@ function ProductDetails() {
           </div>
         )}
       </div>
-      <p>
+      {/* <p>
         {JSON.stringify(
           blockchainDetail.chain.slice(1).map((stop) => {
             return {
@@ -285,7 +285,7 @@ function ProductDetails() {
             };
           })
         )}
-      </p>
+      </p> */}
 
       {/* {JSON.stringify(blockchainDetail.chain, null, 4)} */}
     </div>

@@ -122,7 +122,7 @@ function ProductDetails() {
         <FormUpdate />
       </div>
 
-      <div className="md:flex gap-4 no-wrap md:mx-2 mb-10">
+      <div className="flex flex-col md:flex-row items-center gap-4 no-wrap md:mx-2 mb-10">
         {/* Bagian Kiri */}
         <div className="w-full md:w-2/3 md:mx-2 mb-5 md:mb-0">
           {blockchainDetail.chain
@@ -196,7 +196,7 @@ function ProductDetails() {
 
         {/* Bagian Kanan */}
         {markers.length > 0 && (
-          <div className="w-full md:w-1/3 my-10 md:my-8 rounded-lg overflow-hidden flex justify-center">
+          <div className="w-full h-full md:w-1/3 my-10 md:my-8 rounded-lg overflow-hidden flex justify-center">
             <div className="container">
               <LoadScript googleMapsApiKey="AIzaSyAVwNowxQbWmi9tjKODixI_lXesf6ISsZw">
                 <GoogleMap

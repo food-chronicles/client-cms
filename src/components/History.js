@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserHistory } from "../store/actions/userAction";
-import Lottie from "lottie-react";
-import LoadingBall from "../assets/4316-loading-gaocaisheng.json";
+import { getUserHistory, searchProduct } from "../store/actions/userAction";
+import Lottie from 'lottie-react'
+import LoadingBall from '../assets/4316-loading-gaocaisheng.json'
+import useDebounce from '../utils/useDebounced'
+
 
 const style = {
   height: 500,
@@ -12,13 +14,30 @@ const style = {
 
 const History = () => {
   const dispatch = useDispatch();
+  const [search, setSearch] = useState('');
+  const [resultsHistory, setResults] = useState([])
+
   const { history, isLoadingHistory, error } = useSelector(
     (state) => state.user
   );
 
+  const handleInputSearch = (searchTerm) => {
+    setSearch(searchTerm)
+  }
+
+  const debouncedSearchTerm = useDebounce(search, 1000);
+
   useEffect(() => {
     dispatch(getUserHistory());
+    setResults(history)
   }, []);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      dispatch(searchProduct(debouncedSearchTerm))
+      setResults(history)
+    }
+  }, [debouncedSearchTerm])
 
   if (isLoadingHistory) {
     return (
@@ -34,19 +53,22 @@ const History = () => {
 
   return (
     <div className="container mx-auto">
-      {/* <p>{JSON.stringify(history)}</p> */}
+      <div className="relative text-gray-600">
+        <form action=''>
+          <input type="text" name="search" placeholder="Search" className="bg-gradient-to-b from-blue-200 to-blue-100 w-full h-10 px-5 pr-10 rounded-full text-sm focus:outline-none" onChange={(e) => handleInputSearch(e?.target?.value)} />
+        </form>
+      </div>
       <div className="flex flex-wrap justify-center mx-auto">
-        {history.length === 0 && (
-          <div className="mt-20">
-            <h1 className="text-center">There's no record yet</h1>
-            <h1>
-              Start by <Link to="/scan">Scanning a QR Code</Link> or by{" "}
-              <Link to="/create">Creating a new product chain</Link>
-            </h1>
-          </div>
-        )}
-        {history.length > 0 &&
-          history.map((historyItem) => {
+        {
+          resultsHistory.length === 0 && (
+            <div className="mt-20">
+              <h1 className="text-center">There's no record yet</h1>
+              <h1>Start by <Link to='/scan'>Scanning a QR Code</Link> or by <Link to='/create'>Creating a new product chain</Link></h1>
+            </div>
+          )
+        }
+        {resultsHistory.length > 0 &&
+          resultsHistory.map((historyItem) => {
             return (
               <Link
                 to={`product/${historyItem._id}`}

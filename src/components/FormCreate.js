@@ -35,6 +35,7 @@ function FormCreate() {
       setImage(e.target.files[0]);
     }
   };
+  
 
   const handleImageUpload = (e) => {
     e.preventDefault();

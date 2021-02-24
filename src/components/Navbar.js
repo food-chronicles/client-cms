@@ -45,14 +45,14 @@ export default function Navbar() {
         >
           <nav>
             <ul className="lg:flex items-center justify-between text-base text-gray-700 pt-4 lg:pt-0">
-              <li>
+              {/* <li>
                 <Link
                   to="/"
                   className="lg:p-4 py-3 px-0 block border-b-2 border-transparent text-blue-900 hover:border-blue-900"
                 >
                   Home
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   to="/create"

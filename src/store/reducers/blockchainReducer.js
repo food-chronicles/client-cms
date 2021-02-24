@@ -4,6 +4,7 @@ const initialState = {
   },
   qrCodeLink: "",
   isLoading: false,
+  isLoadingUpdate: false,
   error: null,
 };
 
@@ -26,6 +27,12 @@ const blockchainReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: action.payload,
+      };
+
+    case "SET_LOADING_UPDATE":
+      return {
+        ...state,
+        isLoadingUpdate: action.payload,
       };
 
     case "SET_ERROR":

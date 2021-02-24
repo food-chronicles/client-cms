@@ -6,8 +6,19 @@ import { getDetails } from "../store/actions/blockchainAction";
 import FormUpdate from "../components/FormUpdate";
 import Lottie from "lottie-react";
 import LoadingBall from "../assets/4316-loading-gaocaisheng.json";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
 import { dateFormatLong } from "../utils/dateFormat";
 import capitalizeFirstLetter from "../utils/capitalizeFirstLetter";
+
+const containerStyle = {
+  width: "100%",
+  height: "400px",
+};
 
 const style = {
   height: 500,
@@ -22,6 +33,27 @@ function ProductDetails() {
     (state) => state.blockchain
   );
 
+  const [markers, setMarkers] = useState([]);
+
+  useEffect(() => {
+    // dispatch(getDetails(blockchainId));
+    // console.log('masuk')
+    setMarkers(
+      blockchainDetail.chain.map((locationData) => {
+        return locationData.location;
+      })
+    );
+  }, [blockchainDetail]);
+
+  const mapCenter = {
+    lat:
+      blockchainDetail?.chain[blockchainDetail.chain.length - 1]?.location
+        ?.latitude,
+    lng:
+      blockchainDetail?.chain[blockchainDetail.chain.length - 1]?.location
+        ?.longitude,
+  };
+
   useEffect(() => {
     dispatch(getDetails(blockchainId));
   }, []);
@@ -29,10 +61,7 @@ function ProductDetails() {
   if (isLoading) {
     return (
       <div className="container flex items-center justify-center h-screen">
-        <p>
-          <Lottie animationData={LoadingBall} style={style} />;
-        </p>
-        ;
+        <Lottie animationData={LoadingBall} style={style} />
       </div>
     );
   }
@@ -58,9 +87,9 @@ function ProductDetails() {
             <h1 className="text-gray-900 font-bold text-2xl leading-8 my-1">
               {blockchainDetail.name}
             </h1>
-            <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
+            {/* <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">
               {blockchainDetail._id}
-            </p>
+            </p> */}
             <div>
               <span className="text-gray-600 font-lg text-semibold leading-6">
                 Created at:{" "}
@@ -94,72 +123,107 @@ function ProductDetails() {
       <div className="text-center">
         <FormUpdate />
       </div>
-      {blockchainDetail.chain
-        .slice(0)
-        .reverse()
-        .map((history, index) => {
-          return (
-            <section
-              key={index}
-              className="mx-auto md:max-w-2xl mb-2 p-6 mt-4 bg-white rounded-lg shadow-xl"
-            >
-              <div className="flex flex-col md:flex-row gap-5">
-                <div className="md:w-1/3 overflow-hidden">
-                  <img
-                    className="object-cover w-full h-full"
-                    src={
-                      history.image_url !== "Genesis block"
-                        ? history.image_url
-                        : "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                    }
-                    alt=""
-                  />
-                </div>
 
-                <div className="md:w-2/3">
-                  <small className="uppercase text-blue-400">
-                    {dateFormatLong(history.timestamp)}
-                  </small>
-                  <div className="mb-2">
-                    <h3 className="text-2xl font-semibold">
-                      {history.user.company_name}
-                    </h3>
-                    <p className="text-gray-500">{history.user.category}</p>
-                  </div>
-                  <div className="mb-2">
-                    <p>
-                      <span>
-                        {history.location.city && history.location.city + ", "}
-                      </span>
-                      {history.location.region}
-                    </p>
-                    <p>{history.location.country}</p>
-                  </div>
-                  <div className="text-black">
-                    {typeof history.data === "string" ? (
-                      "Your product's history starts here"
-                    ) : (
-                      <div>
-                        {Object.keys(history.data)
-                          .sort(function (a, b) {
-                            return b - a;
-                          })
-                          .map((key, index) => {
-                            return (
-                              <p key={index}>
-                                <small>{capitalizeFirstLetter(key)}</small>:{" "}
-                                {history.data[key]}
-                              </p>
-                            );
-                          })}
+      <div className="md:flex gap-4 no-wrap md:mx-2 mb-10">
+        {/* Bagian Kiri */}
+        <div className="w-full md:w-2/3 md:mx-2 mb-5 md:mb-0">
+          {blockchainDetail.chain
+            .slice(0)
+            .reverse()
+            .map((history, index) => {
+              return (
+                <section
+                  key={index}
+                  className="mx-auto md:max-w-2xl mb-2 p-6 mt-4 bg-white rounded-lg shadow-xl"
+                >
+                  <div className="flex flex-col md:flex-row gap-5">
+                    <div className="md:w-1/3 overflow-hidden">
+                      <img
+                        className="object-cover w-full h-full"
+                        src={
+                          history.image_url !== "Genesis block"
+                            ? history.image_url
+                            : "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+                        }
+                        alt=""
+                      />
+                    </div>
+
+                    <div className="md:w-2/3">
+                      <small className="uppercase text-blue-400">
+                        {dateFormatLong(history.timestamp)}
+                      </small>
+                      <div className="mb-2">
+                        <h3 className="text-2xl font-semibold">
+                          {history.user.company_name}
+                        </h3>
+                        <p className="text-gray-500">{history.user.category}</p>
                       </div>
-                    )}
+                      <div className="mb-2">
+                        <p>
+                          <span>
+                            {history.location.city &&
+                              history.location.city + ", "}
+                          </span>
+                          {history.location.region}
+                        </p>
+                        <p>{history.location.country}</p>
+                      </div>
+                      <div className="text-black">
+                        {typeof history.data === "string" ? (
+                          "Your product's history starts here"
+                        ) : (
+                          <div>
+                            {Object.keys(history.data)
+                              .sort(function (a, b) {
+                                return b - a;
+                              })
+                              .map((key, index) => {
+                                return (
+                                  <p key={index}>
+                                    <small>{capitalizeFirstLetter(key)}</small>:{" "}
+                                    {history.data[key]}
+                                  </p>
+                                );
+                              })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </section>
-          );
-        })}
+                </section>
+              );
+            })}
+        </div>
+
+        {/* Bagian Kanan */}
+        {markers.length > 0 && (
+          <div className="w-full md:w-1/3 my-10 md:my-8 rounded-lg overflow-hidden flex justify-center">
+            <div className="container">
+              <LoadScript googleMapsApiKey="AIzaSyAVwNowxQbWmi9tjKODixI_lXesf6ISsZw">
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={mapCenter}
+                  zoom={6}
+                >
+                  {markers.map((marker, index) => (
+                    <Marker
+                      key={index}
+                      position={{
+                        lat: Number(marker?.latitude),
+                        lng: Number(marker?.longitude),
+                      }}
+                    />
+                  ))}
+                  <></>
+                </GoogleMap>
+              </LoadScript>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* {JSON.stringify(blockchainDetail.chain, null, 4)} */}
     </div>
   );
 }

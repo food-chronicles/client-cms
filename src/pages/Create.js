@@ -7,12 +7,11 @@ function Create() {
         <span className="logo-food-color">Food</span> Chronicles
       </h1>
       <h2 className="text-lg">Create new entry</h2>
-        <div className="mx-auto max-w-xl p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
-          <div className="pt-1 flex-grow">
-            <FormCreate />
-          </div>
+      <div className="mx-auto max-w-xl p-6 bg-gray-100 my-10 rounded-lg shadow-xl">
+        <div className="pt-1 flex-grow">
+          <FormCreate />
         </div>
-      {/* </div> */}
+      </div>
     </div>
   );
 }

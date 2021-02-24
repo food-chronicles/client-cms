@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createBlockchain } from "../store/actions/blockchainAction";
 import { storage } from "../firebase";
 import { successToaster, errorToaster } from "../utils/toaster";
+import Lottie from "lottie-react";
+import LoadingBall from "../assets/4316-loading-gaocaisheng.json";
 
 function FormCreate() {
   const [name, setName] = useState("");
@@ -99,9 +101,15 @@ function FormCreate() {
       return errorToaster("Missing field!", "Amount is required");
     }
 
+    if (amount <= 0) {
+      setAmount(1);
+      return errorToaster("Faulty!", "Amount must be bigger than 0");
+    }
+
     if (!imageUrl) {
       return errorToaster("Missing field!", "Image must be uploaded");
     }
+    console.log("lolos dan cek duplicate key");
 
     setIsDuplicateKey(false);
 
@@ -120,9 +128,12 @@ function FormCreate() {
     if (!isDuplicateKey) {
       setNameError(false);
       setAmountError(false);
+      console.log(isDuplicateKey, "ini setelah ecek status duplicate");
       if (navigator.geolocation) {
+        console.log(navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            console.log(position, "masuk nih");
             let payload = {
               name,
               data: {
@@ -132,11 +143,18 @@ function FormCreate() {
               image_url: imageUrl,
               position: position.coords,
             };
+            // console.log(payload, "ini payload nya");
             dispatch(createBlockchain(payload));
           },
           (err) => {
+            // console.log("gagal nih");
             console.log(err);
-          }
+            errorToaster(
+              "Oops!",
+              "Please allow browser to access location info"
+            );
+          },
+          { timeout: 10000 }
         );
       } else {
         return errorToaster(
@@ -145,6 +163,27 @@ function FormCreate() {
         );
       }
     }
+  }
+
+  const style = {
+    height: 200,
+    width: 200,
+  };
+  // console.log(isLoading, 'status loading')
+
+  if (isLoading) {
+    return (
+      <div className="container flex items-center justify-center">
+          <Lottie animationData={LoadingBall} style={style} />
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="container mx-auto p-6 text-center">
+        <p>{JSON.stringify(error)}</p>;
+      </div>
+    );
   }
 
   return (
@@ -182,6 +221,7 @@ function FormCreate() {
                 type="number"
                 name="amount"
                 id="amount"
+                value={amount}
                 required
               />
               {amountError && (
@@ -210,10 +250,12 @@ function FormCreate() {
               Upload
             </button>
           </div>
-          {uploadProgress!== 0 && <div className="m-4 flex gap-4 justify-center">
-            <progress value={uploadProgress} max="100" />
-            <small>Upload Progress: {uploadProgress}%</small>
-          </div>}
+          {uploadProgress !== 0 && (
+            <div className="m-4 flex gap-4 justify-center">
+              <progress value={uploadProgress} max="100" />
+              <small>Upload Progress: {uploadProgress}%</small>
+            </div>
+          )}
           {inputList.map((x, i) => {
             return (
               <div key={i}>

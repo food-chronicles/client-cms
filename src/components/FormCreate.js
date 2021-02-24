@@ -102,13 +102,14 @@ function FormCreate() {
     }
 
     if (amount <= 0) {
-      setAmount(1)
+      setAmount(1);
       return errorToaster("Faulty!", "Amount must be bigger than 0");
     }
 
     if (!imageUrl) {
       return errorToaster("Missing field!", "Image must be uploaded");
     }
+    console.log("lolos dan cek duplicate key");
 
     setIsDuplicateKey(false);
 
@@ -127,9 +128,12 @@ function FormCreate() {
     if (!isDuplicateKey) {
       setNameError(false);
       setAmountError(false);
+      console.log(isDuplicateKey, "ini setelah ecek status duplicate");
       if (navigator.geolocation) {
+        console.log(navigator.geolocation);
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            console.log(position, "masuk nih");
             let payload = {
               name,
               data: {
@@ -139,11 +143,18 @@ function FormCreate() {
               image_url: imageUrl,
               position: position.coords,
             };
+            // console.log(payload, "ini payload nya");
             dispatch(createBlockchain(payload));
           },
           (err) => {
+            // console.log("gagal nih");
             console.log(err);
-          }
+            errorToaster(
+              "Oops!",
+              "Please allow browser to access location info"
+            );
+          },
+          { timeout: 10000 }
         );
       } else {
         return errorToaster(
@@ -158,7 +169,7 @@ function FormCreate() {
     height: 200,
     width: 200,
   };
-  console.log(isLoading, 'status loading')
+  // console.log(isLoading, 'status loading')
 
   if (isLoading) {
     return (
@@ -242,10 +253,12 @@ function FormCreate() {
               Upload
             </button>
           </div>
-          {uploadProgress!== 0 && <div className="m-4 flex gap-4 justify-center">
-            <progress value={uploadProgress} max="100" />
-            <small>Upload Progress: {uploadProgress}%</small>
-          </div>}
+          {uploadProgress !== 0 && (
+            <div className="m-4 flex gap-4 justify-center">
+              <progress value={uploadProgress} max="100" />
+              <small>Upload Progress: {uploadProgress}%</small>
+            </div>
+          )}
           {inputList.map((x, i) => {
             return (
               <div key={i}>

@@ -36,8 +36,6 @@ function ProductDetails() {
   const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
-    // dispatch(getDetails(blockchainId));
-    // console.log('masuk')
     setMarkers(
       blockchainDetail.chain.map((locationData) => {
         return locationData.location;

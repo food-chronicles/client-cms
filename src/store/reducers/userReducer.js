@@ -1,13 +1,13 @@
 const initialState = {
   _id: "",
   username: "",
-  email:"",
-  password:"",
-  company_name: "",
   email: "",
+  password: "",
+  company_name: "",
   category: "",
-  textSearch: "",
+  search: "",
   history: [],
+  filteredHistory: [],
   isLoading: false,
   isLoadingHistory: false,
   error: null,
@@ -30,17 +30,22 @@ const userReducer = (state = initialState, action) => {
       const history = action.payload;
       return {
         ...state,
-        history
+        history,
+        filteredHistory: history
       };
 
-      case "SEARCH_ITEM":
-        const search = action.payload;
-        console.log(search, 'from redux');
-        return {
-          ...state,
-          textSearch: action.text,
-          history: search
-        };
+    case "SET_SEARCH":
+      return {
+        ...state, 
+        search: action.payload
+      }
+
+    case "FILTERED_HISTORY":
+      const filteredHistory = action.payload;
+      return {
+        ...state,
+        filteredHistory
+      };
 
     case "SET_LOADING":
       return {

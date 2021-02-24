@@ -1,4 +1,5 @@
 import History from "../components/History";
+import SearchBar from "../components/SearchBar";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -81,6 +82,7 @@ function Home() {
             {/* <h1 className="text-gray-900 text-xl leading-8 my-1 text-center mt-1 mb-5 pb-2 border-b-4 border-blue-400">
               History
             </h1> */}
+            <SearchBar />
             <History />
           </div>
         </div>

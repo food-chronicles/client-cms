@@ -51,9 +51,16 @@ export function getUserHistory() {
   };
 }
 
-export const searchProduct = (text) => {
+export function setSearch(text){
+  return {
+    type: 'SET_SEARCH',
+    payload: text
+  }
+}
+
+export const filterHistory = (text) => {
   return async (dispatch) => {
-    dispatch(setLoading(true));
+    // dispatch(setLoading(true));
     try {
       let url = `http://localhost:4000/product?search=${text}`
       let productInfo = await axios({
@@ -64,14 +71,13 @@ export const searchProduct = (text) => {
         },
       });
       dispatch({
-        type: "SEARCH_ITEM",
+        type: "FILTERED_HISTORY",
         payload: productInfo.data,
-        text,
       });
-      dispatch(setLoading(false));
-      dispatch(setError(null));
+      // dispatch(setLoading(false));
+      // dispatch(setError(null));
     } catch (error) {
-      dispatch(setLoading(false));
+      // dispatch(setLoading(false));
       dispatch(setError(error));
       errorToaster("Oops!", error.response.data.message)
       console.log(error)
@@ -98,12 +104,9 @@ export const updateUser = (data, id) => {
         },
       });
       successToaster("Upload success", "Your profile has been updated");
-      // console.log(localStorage.access_token, 'sebelum berubah')
       localStorage.access_token = response.data.access_token;
-      // console.log(localStorage.access_token, 'setelah berubah')
       dispatch(getUserInfo())
       console.log(response, "dari upadte user");
-      // return response;
     } catch (error) {
       errorToaster("Oops!", error.message);
       console.log(error);
